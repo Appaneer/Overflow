@@ -2,15 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NodeManager : MonoBehaviour {
+public class Map : MonoBehaviour {
+
+	public GameObject[] bricks;
+	public int height = 9;
+	public int width;
 
 	public HashSet<Node> selectedNodes;
 	public int sum = 7;
 	RaycastHit hit;
 
-	// Use this for initialization
-	void Start () {
+	void Start(){
 		selectedNodes = new HashSet<Node> ();
+		InitMap ();
 	}
 
 	void Update(){
@@ -36,14 +40,21 @@ public class NodeManager : MonoBehaviour {
 						foreach (Node node in selectedNodes) {
 							Destroy (node.gameObject);
 						}
-						Debug.Log ("yeaaah");
-					} else
-						Debug.Log ("nooooo");
-
+					} else {
+						//TODO wrong sum animation 
+					}
 					selectedNodes.Clear ();
 					temp = 0;
 					break;
 				}
+			}
+		}
+	}
+
+	void InitMap(){
+		for(int r = 0; r < height; r++){
+			for(int c = 0; c < width; c++){
+				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2, r-4), Quaternion.identity);
 			}
 		}
 	}
