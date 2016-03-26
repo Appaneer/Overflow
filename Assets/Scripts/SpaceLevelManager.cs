@@ -14,7 +14,7 @@ public class SpaceLevelManager : MonoBehaviour {
 	float acc;
 	public Transform[] spawnPoints;
 	int index = 0;
-
+	float timeConstant=0.05f;
 	int score;
 
 	void Start(){
@@ -28,11 +28,12 @@ public class SpaceLevelManager : MonoBehaviour {
 		acc -= Time.deltaTime;
 		if (acc <= 0.0f) {
 			Instantiate (bricks [Random.Range (1, bricks.Length)], spawnPoints [index++].position, Quaternion.identity);
-			acc = timeToSpawn;
+			acc = 3.0f-timeConstant*Time.time;
 			if (index == spawnPoints.Length)
 				index = 0;
 		}
 
+		UIManager.updateTime ((int)Time.time);
 		if (Input.touchCount == 1) {
 
 			foreach (Touch touch in Input.touches) {
@@ -54,6 +55,8 @@ public class SpaceLevelManager : MonoBehaviour {
 						if (temp == sum) {
 							//UIManager.updateScore (++score);
 							//TODO animation
+							score += selectedNodes.Count;
+							UIManager.updateScore (score);
 							foreach (GravityNode node in selectedNodes) {
 								Destroy (node.gameObject);
 							}

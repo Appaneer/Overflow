@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class TetrisLevelManager : MonoBehaviour {
 
 	public GameObject[] bricks;
-	public int height = 9;
+	public int height = 5;
 	public int width;
 
 	public HashSet<Node> selectedNodes;
@@ -15,6 +15,7 @@ public class TetrisLevelManager : MonoBehaviour {
 	public float timeToSpawn = 3.0f;
 	float[] spawnPoints = { -2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
 	int index = 0;
+	float timeConstant=0.05f;
 
 	int score;
 
@@ -28,10 +29,11 @@ public class TetrisLevelManager : MonoBehaviour {
 		timeToSpawn -= Time.deltaTime;
 		if (timeToSpawn <= 0.0f) {
 			Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (spawnPoints[index++], 9f), Quaternion.identity);
-			timeToSpawn = 3.0f;
+			timeToSpawn = 3.0f-timeConstant*Time.time;
 			if(index == spawnPoints.Length)
 				index = 0;
 		}
+		UIManager.updateTime ((int)Time.time);
 
 		if (Input.touchCount == 1)
 		{

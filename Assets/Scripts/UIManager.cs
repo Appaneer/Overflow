@@ -13,12 +13,15 @@ public class UIManager : MonoBehaviour {
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	public GameObject score;
+	public GameObject time;
 	static Text scoreText;
+	static Text timeText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 
 	void Start(){
 		scoreText = score.GetComponent<Text>();
+		timeText = time.GetComponent<Text> ();
 	}
 
 	public void LoadTetrisLevel(){
@@ -54,7 +57,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void updateScore(int score){
-		scoreText.text = score + "";
+		scoreText.text = score+"";
+	}
+
+	public static void updateTime(int time){
+		timeText.text = time + "s";
 	}
 		
 	public static bool isHavingWiFi()
