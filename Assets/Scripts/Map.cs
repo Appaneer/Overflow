@@ -12,12 +12,24 @@ public class Map : MonoBehaviour {
 	public int sum = 7;
 	RaycastHit hit;
 
+	public float timeToSpawn = 3.0f;
+	float[] stuff = { -2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
+	int index = 0;
+
 	void Start(){
 		selectedNodes = new HashSet<Node> ();
 		InitMap ();
 	}
 
 	void Update(){
+		timeToSpawn -= Time.deltaTime;
+		if (timeToSpawn <= 0.0f) {
+			Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (stuff[index++], 9f), Quaternion.identity);
+			timeToSpawn = 3.0f;
+			if(index == stuff.Length)
+				index = 0;
+		}
+
 		if (Input.touchCount == 1)
 		{
 
@@ -52,10 +64,12 @@ public class Map : MonoBehaviour {
 	}
 
 	void InitMap(){
-		for(int r = 0; r < height; r++){
-			for(int c = 0; c < width; c++){
-				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2, r-4), Quaternion.identity);
+		for(float r = 0; r < height; r++){
+			for(float c = 0; c < width; c++){
+				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2.5f, r-2), Quaternion.identity);
 			}
 		}
 	}
+
+
 }
