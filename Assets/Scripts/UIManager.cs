@@ -12,11 +12,21 @@ public class UIManager : MonoBehaviour {
 	public Button numberButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
+	public GameObject score;
+	static Text scoreText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 
-	public void LoadPlusLevel(){
-		SceneManager.LoadScene ("Level");
+	void Start(){
+		scoreText = score.GetComponent<Text>();
+	}
+
+	public void LoadTetrisLevel(){
+		SceneManager.LoadScene ("Tetris Level");
+	}
+
+	public void LoadSpaceLevel(){
+		SceneManager.LoadScene ("Space Level");
 	}
 
 	public void ToggleCreditPage(){
@@ -43,6 +53,10 @@ public class UIManager : MonoBehaviour {
 		soundButton.image.sprite = soundButton.image.sprite.name.Equals ("sound on") ? soundOffSprite : soundOnSprite;
 	}
 
+	public static void updateScore(int score){
+		scoreText.text = score + "";
+	}
+		
 	public static bool isHavingWiFi()
 	{
 		try

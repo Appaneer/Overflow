@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Map : MonoBehaviour {
+public class TetrisLevelManager : MonoBehaviour {
 
 	public GameObject[] bricks;
 	public int height = 9;
@@ -13,10 +13,13 @@ public class Map : MonoBehaviour {
 	RaycastHit hit;
 
 	public float timeToSpawn = 3.0f;
-	float[] stuff = { -2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
+	float[] spawnPoints = { -2.5f, -1.5f, -0.5f, 0.5f, 1.5f, 2.5f};
 	int index = 0;
 
+	int score;
+
 	void Start(){
+		score = 0;
 		selectedNodes = new HashSet<Node> ();
 		InitMap ();
 	}
@@ -24,9 +27,9 @@ public class Map : MonoBehaviour {
 	void Update(){
 		timeToSpawn -= Time.deltaTime;
 		if (timeToSpawn <= 0.0f) {
-			Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (stuff[index++], 9f), Quaternion.identity);
+			Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (spawnPoints[index++], 9f), Quaternion.identity);
 			timeToSpawn = 3.0f;
-			if(index == stuff.Length)
+			if(index == spawnPoints.Length)
 				index = 0;
 		}
 
@@ -49,6 +52,8 @@ public class Map : MonoBehaviour {
 						temp += node.value;
 					}
 					if (temp == sum) {
+						score += selectedNodes.Count;
+						UIManager.updateScore (score);
 						foreach (Node node in selectedNodes) {
 							Destroy (node.gameObject);
 						}
