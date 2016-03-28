@@ -27,8 +27,6 @@ public class UIManager : MonoBehaviour {
 		}
 		catch (NullReferenceException e) {
 		}
-		
-
 
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
