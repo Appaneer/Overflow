@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using System.Net;
-
+using System;
 public class UIManager : MonoBehaviour {
 
 	public Canvas creditPage;
@@ -21,8 +21,14 @@ public class UIManager : MonoBehaviour {
 	public bool enableTestMode;
 
 	void Start(){
+		try{
 		gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
-		scoreText = GameObject.Find("score text").GetComponent<Text>();
+			scoreText = GameObject.Find("score text").GetComponent<Text>();
+		}
+		catch (NullReferenceException e) {
+		}
+		
+
 
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
