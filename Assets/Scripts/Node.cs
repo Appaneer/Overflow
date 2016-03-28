@@ -5,13 +5,18 @@ public class Node : MonoBehaviour {
 
 	public int value;
 	public bool isPowerUp;
-	public powerUp myPowerUp;
+	public PowerUp myPowerUp;
 
-	public int Activate(){
+	void Start(){
+		if (value != 0)
+			isPowerUp = false;
+	}
+
+	void OnDestroy(){
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
-			if (myPowerUp == powerUp.rowEliminator) {
+			if (myPowerUp == PowerUp.rowEliminator) {
 				for(int i = 0; i < arr.Length && temp < 6; i++){
 					if(Mathf.Abs(transform.position.y - arr[i].transform.position.y) <= 0.2f){
 						Destroy (arr[i]);
@@ -19,22 +24,19 @@ public class Node : MonoBehaviour {
 					}
 				}
 			}
-			else if(myPowerUp == powerUp.bomb){
+			else if(myPowerUp == PowerUp.bomb){
 				for(int i = 0; i < arr.Length && temp < 9; i++){
-					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.5f){
+					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.5f){//root 2 + some tolerance
 						Destroy (arr[i]);
 						temp++;
 					}
 				}
 			}
-
 		}
-		return value;
 	}
-
 }
 
-public enum powerUp
+public enum PowerUp
 {
 	rowEliminator,
 	bomb,

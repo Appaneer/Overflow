@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour {
 
 	void Start(){
 		try{
-		gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
+			gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
 			scoreText = GameObject.Find("score text").GetComponent<Text>();
 		}
 		catch (NullReferenceException e) {
@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour {
 
 	public void ShowRewardedAd()
 	{
-		if (Advertisement.IsReady("rewardedVideo"))
+		if (Advertisement.IsReady("rewardedVideo") && isHavingWiFi())
 		{
 			var options = new ShowOptions { resultCallback = HandleShowResult };
 			Advertisement.Show("rewardedVideo", options);
@@ -127,18 +127,16 @@ public class UIManager : MonoBehaviour {
 		
 	public static bool isHavingWiFi()
 	{
-		try
-		{
-			using (WebClient client = new WebClient())
-				using (var stream = client.OpenRead("http://www.google.com"))
-				{
-					return true;
-				}
-		}
-		catch
-		{
-			return false;
-		}
+		#if UNITY_EDITOR
+		if (Network.player.ipAddress.ToString() != "127.0.0.1")
+			return true;   
+		return false;
+		#endif
+		#if UNITY_IPHONE || UNITY_ANDROID
+		if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork || Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
+			return true;
+		return false;
+		#endif
 	}
 
 	public void FacebookShare(){

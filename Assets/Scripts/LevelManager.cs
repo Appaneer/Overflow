@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour {
 						// the touch is ended so now we can calculate the time and distance
 						int temp = 0;
 						foreach (T node in selectedNodes) {
-							temp += node.Activate ();
+							temp += node.value;
 						}
 						if (temp == sum) {
 							//TODO animation
@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour {
 
 	public static void DeleteNodes(int amount){
 		GameObject[] arr = GameObject.FindGameObjectsWithTag("Node");
-		for (int i = 0; i < amount; i++) {
+		for (int i = arr.Length - 1; i >= arr.Length - 1 - amount; i--) {
 			Destroy (arr [i]);
 		}
 	}
