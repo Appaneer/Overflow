@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GravityNode : MonoBehaviour {
+public class GravityNode : Node {
 
-	public int value;
 	public Transform centerOfGravity;
 	public float pullForce;
 	Rigidbody rb;
