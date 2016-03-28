@@ -61,9 +61,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void updateTime(int time){
-		int minutes = time / 60;
-		int seconds = time % 60;
-		timeText.text = minutes.ToString("0#")+" : "+seconds.ToString("0#");
+		timeText.text = time + "s";
 	}
 		
 	public static bool isHavingWiFi()
