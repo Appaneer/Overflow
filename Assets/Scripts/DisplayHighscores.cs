@@ -21,7 +21,7 @@ public class DisplayHighscores : MonoBehaviour {
 		for(int i = 0; i < highschoreText.Length; i++){
 			highschoreText[i].text = i+1 + ".";
 			if(highScoresList.Length > i){
-				highschoreText [i].text += highScoresList [i].username + "- " + highScoresList [i].score;s
+				highschoreText [i].text += highScoresList [i].username + "- " + highScoresList [i].score;
 			}
 		}
 	}

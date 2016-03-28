@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour {
 						// the touch is ended so now we can calculate the time and distance
 						int temp = 0;
 						foreach (T node in selectedNodes) {
-							temp += node.value;
+							temp += node.Activate ();
 						}
 						if (temp == sum) {
 							//TODO animation
