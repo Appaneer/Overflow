@@ -7,11 +7,12 @@ using System.Net;
 using System;
 public class UIManager : MonoBehaviour {
 
+	public Canvas gamePage;//this canvas contains everything but shop page
 	public Canvas creditPage;
 	public Canvas settingPage;
-	public Canvas numberPage;
 	static Canvas gameOverCanvas;
-	public Button numberButton;
+	public Canvas shopPage;
+	public Button shopButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	static Text scoreText;
@@ -21,8 +22,6 @@ public class UIManager : MonoBehaviour {
 	public bool enableTestMode;
 
 	void Start(){
-
-	
 		try{
 			gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
 			scoreText = GameObject.Find("score text").GetComponent<Text>();
@@ -75,14 +74,14 @@ public class UIManager : MonoBehaviour {
 		settingPage.enabled = settingPage.enabled ? false : true;
 	}
 
-	public void ToggleNumberPage(){
-		ToggleButton ();
-		numberPage.enabled = numberPage.enabled ? false : true;
+	public void ToggleShopPage(){
+		gamePage.enabled = gamePage.enabled ? false : true;
+		shopPage.enabled = shopPage.enabled ? false : true;
 	}
 
 	private void ToggleButton(){
-		numberButton.image.enabled = numberButton.enabled ? false : true;
-		numberButton.enabled = numberButton.enabled ? false : true;
+		shopButton.image.enabled = shopButton.enabled ? false : true;
+		shopButton.enabled = shopButton.enabled ? false : true;
 	}
 
 	public void ToggleSound(Button soundButton){
