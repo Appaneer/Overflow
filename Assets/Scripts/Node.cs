@@ -32,6 +32,9 @@ public class Node : MonoBehaviour {
 					}
 				}
 			}
+			else if(myPowerUp == PowerUp.coin){
+				CoinManager.Deposit (1);
+			}
 		}
 	}
 }

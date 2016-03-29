@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
 	public Button shopButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
+	public Text randomText;
+	static Text coinText;
 	static Text scoreText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
@@ -22,13 +24,22 @@ public class UIManager : MonoBehaviour {
 	public bool enableTestMode;
 
 	void Start(){
+
+		try{
+			coinText = GameObject.Find("coin text").GetComponent<Text>();
+		}
+		catch (NullReferenceException e) {
+			e.GetHashCode ();//im doing this to get rid of that annoying warning
+		}
+
 		try{
 			gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
 			scoreText = GameObject.Find("score text").GetComponent<Text>();
 		}
 		catch (NullReferenceException e) {
+			e.GetHashCode ();//im doing this to get rid of that annoying warning
 		}
-
+		updateCoin ();
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
 		} else if (!Advertisement.isSupported) {
@@ -59,11 +70,6 @@ public class UIManager : MonoBehaviour {
 		SceneManager.LoadScene ("Landing Page");
 	}
 
-	public static void ShowEndGamePage(){
-		TogglePause ();
-		gameOverCanvas.enabled = true;
-	}
-
 	public void ToggleCreditPage(){
 		ToggleButton ();
 		creditPage.enabled =  creditPage.enabled ? false : true;
@@ -90,6 +96,42 @@ public class UIManager : MonoBehaviour {
 
 	public static void TogglePause(){
 		LevelManager.isPaused = true;
+	}
+
+	public void BuyPowerups(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			CoinManager.Withdraw (price);
+			updateCoin ();
+		}
+	}
+
+	public void BuyRandomNumber(GameObject thisButton){
+		int price = 1;
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			thisButton.SetActive (false);//disable this gameobject
+			randomText.enabled = true;
+			StartCoroutine (RandomNumberAnimation(thisButton));
+
+		}
+	}
+
+	private IEnumerator RandomNumberAnimation(GameObject thisButton){
+		for(int i = 30; i >= 1; i--){
+			randomText.text = UnityEngine.Random.Range (11,20)+"";
+			yield return new WaitForSeconds (0.4f / i);
+		}
+		yield return new WaitForSeconds (3);
+		Debug.Log ("Your number is "+int.Parse(randomText.text));
+		thisButton.SetActive (true);
+		randomText.enabled = false;
+	}
+
+	public static void ShowEndGamePage(){
+		TogglePause ();
+		gameOverCanvas.enabled = true;
 	}
 
 	public void ShowRewardedAd()
@@ -124,6 +166,10 @@ public class UIManager : MonoBehaviour {
 		scoreText.text = score+"";
 	}
 		
+	public static void updateCoin(){
+		coinText.text = PlayerPrefs.GetInt ("Coins")+"";
+	}
+
 	public static bool isHavingWiFi()
 	{
 		#if UNITY_EDITOR
