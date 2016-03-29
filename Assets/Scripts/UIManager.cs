@@ -42,10 +42,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Update(){
-
-
 		if (Input.GetKey (KeyCode.Escape))
-			Application.Quit ();
+			LoadLandingPage ();
 	}
 
 	public void LoadTetrisLevel(){
