@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour {
 	public bool enableTestMode;
 
 	void Start(){
+
+	
 		try{
 			gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
 			scoreText = GameObject.Find("score text").GetComponent<Text>();
@@ -40,7 +42,7 @@ public class UIManager : MonoBehaviour {
 			Advertisement.Initialize(gameId, enableTestMode);
 		}
 	}
-
+		
 	void Update(){
 		if (Input.GetKey (KeyCode.Escape))
 			LoadLandingPage ();
