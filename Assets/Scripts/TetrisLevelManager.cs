@@ -23,7 +23,7 @@ public class TetrisLevelManager : LevelManager {
 	void InitMap(){
 		for(float r = 0; r < height; r++){
 			for(float c = 0; c < width; c++){
-				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2.5f, r-2), Quaternion.identity);
+				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2.5f, r-2), Quaternion.Euler(0, 180, 0));
 			}
 		}
 	}

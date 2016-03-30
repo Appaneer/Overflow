@@ -63,7 +63,7 @@ public class LevelManager : MonoBehaviour {
 		accumulator -= Time.deltaTime;
 		if (accumulator <= 0.0f) {
 			if(!isPaused)
-				Instantiate (bricks [Random.Range (1, bricks.Length)], spawnPoints [index++].position, Quaternion.identity);
+				Instantiate (bricks [Random.Range (1, bricks.Length)], spawnPoints [index++].position, Quaternion.Euler(0, 180, 0));
 			accumulator = timeToSpawn;
 			if (index == spawnPoints.Length)
 				index = 0;
