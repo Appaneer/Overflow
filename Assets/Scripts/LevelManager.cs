@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour {
 	public static bool isPaused = false;
 	public GameObject bomb;
 	public GameObject coin;
+	public static bool isWatchedAds;
 
 	public float timeToSpawn = 3.0f;
 	protected float accumulator;

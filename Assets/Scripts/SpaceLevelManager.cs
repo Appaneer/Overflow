@@ -9,6 +9,7 @@ public class SpaceLevelManager : LevelManager {
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
+		isWatchedAds = false;
 		InitMap ();
 	}
 
@@ -18,8 +19,8 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void InitMap(){
-		for(float r = 2; r >= -2; r--){
-			for(float c = 2; c >= -2; c--){
+		for(float r = 2.5f; r >= -2.5f; r--){
+			for(float c = 2.5f; c >= -2.5f; c--){
 				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (r, c), Quaternion.Euler(0, 180, 0));
 			}
 		}

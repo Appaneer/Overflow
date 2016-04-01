@@ -19,6 +19,7 @@ public class TetrisLevelManager : LevelManager {
 		selectedNodes = new HashSet<Node> ();
 		score = 0;
 		index = 0;
+		isWatchedAds = false;
 		InitMap ();
 	}
 

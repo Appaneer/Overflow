@@ -10,26 +10,24 @@ public class UIManager : MonoBehaviour {
 	public Canvas gamePage;//this canvas contains everything but shop page
 	public Canvas creditPage;
 	public Canvas settingPage;
-	static Canvas gameOverCanvas;
+	public Canvas gameOverCanvas;
 	public Canvas shopPage;
 	public Canvas purchasedPage;
 	public Button shopButton;
+	public Button videoButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	public Text randomText;
-	static Text coinText;
-	static Text scoreText;
+	public Text coinText;
+	public Text scoreText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
 	public bool enableTestMode;
+	private static UIManager instance;
 
 	void Start(){
-		gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
-		scoreText = GameObject.Find("score text").GetComponent<Text>();
-		coinText = GameObject.Find("coin text").GetComponent<Text>();
-
-		updateCoin ();
+		instance = this;
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
 		} else if (!Advertisement.isSupported) {
@@ -73,6 +71,7 @@ public class UIManager : MonoBehaviour {
 	public void ToggleShopPage(){
 		gamePage.enabled = gamePage.enabled ? false : true;
 		shopPage.enabled = shopPage.enabled ? false : true;
+		updateCoin ();
 	}
 
 	private void ToggleButton(){
@@ -126,7 +125,6 @@ public class UIManager : MonoBehaviour {
 			thisButton.SetActive (false);//disable this gameobject
 			randomText.enabled = true;
 			StartCoroutine (RandomNumberAnimation(thisButton));
-			StartCoroutine ("DisplayPurchasedPage");
 		}
 	}
 
@@ -143,7 +141,13 @@ public class UIManager : MonoBehaviour {
 
 	public static void ShowEndGamePage(){
 		TogglePause ();
-		gameOverCanvas.enabled = true;
+		instance.gameOverCanvas.enabled = true;
+		if (!LevelManager.isWatchedAds)
+			instance.videoButton.gameObject.SetActive (true);
+		else
+			instance.videoButton.gameObject.SetActive (false);
+
+			
 	}
 
 	public void ShowRewardedAd()
@@ -161,8 +165,9 @@ public class UIManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
-			LevelManager.DeleteNodes (10);
+			LevelManager.DeleteNodes (8);
 			LevelManager.isPaused = false;
+			LevelManager.isWatchedAds = true;
 			gameOverCanvas.enabled = false;
 			break;
 		case ShowResult.Skipped:
@@ -179,11 +184,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void updateScore(int score){
-		scoreText.text = score+"";
+		instance.scoreText.text = score+"";
 	}
 		
 	public static void updateCoin(){
-		coinText.text = PlayerPrefs.GetInt ("Coins")+"";
+		instance.coinText.text = PlayerPrefs.GetInt ("Coins")+"";
 	}
 
 	IEnumerator DisplayPurchasedPage(){
