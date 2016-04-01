@@ -117,6 +117,17 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 		
+	public void BuyNumberPowerups(int number){
+		int price = 1;
+		if(PlayerPrefs.GetInt("Coins") >= price && number >= 1 && number <= 6){
+			//buy stuff
+			PlayerPrefs.SetInt("Num"+number, PlayerPrefs.GetInt("Num"+number) + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
+	}
+
 	public void BuyRandomNumber(GameObject thisButton){
 		int price = 1;
 		if(PlayerPrefs.GetInt("Coins") >= price){
@@ -146,8 +157,6 @@ public class UIManager : MonoBehaviour {
 			instance.videoButton.gameObject.SetActive (true);
 		else
 			instance.videoButton.gameObject.SetActive (false);
-
-			
 	}
 
 	public void ShowRewardedAd()

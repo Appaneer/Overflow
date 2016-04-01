@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour {
 	public GameObject coin;
 	public static bool isWatchedAds;
 
-	public float timeToSpawn = 3.0f;
+	public float timeToSpawn;
 	protected float accumulator;
 
 	protected void GetInput<T>() where T : Node{
