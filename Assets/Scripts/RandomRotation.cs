@@ -11,9 +11,11 @@ public class RandomRotation : MonoBehaviour {
 		MeshRenderer gameObjectRenderer = GetComponent<MeshRenderer>();
 
 		Material newMaterial = new Material(Shader.Find("Standard"));
-
+		float ranScale = Random.Range (0.4f, 0.6f);
+		transform.localScale = new Vector3(ranScale,ranScale,ranScale);
 		newMaterial.color = whateverColor;
 		gameObjectRenderer.material = newMaterial ;
+		Destroy (gameObject, 5);
 	}
 
 

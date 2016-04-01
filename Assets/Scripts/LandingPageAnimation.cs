@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LandingPageAnimation : MonoBehaviour {
 
-	float timeToSpawn = 0.5f;
+	float timeToSpawn = 0.35f;
 	protected float accumulator;
 
 	public GameObject brick;
