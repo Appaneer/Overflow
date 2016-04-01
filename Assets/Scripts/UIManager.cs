@@ -24,21 +24,10 @@ public class UIManager : MonoBehaviour {
 	public bool enableTestMode;
 
 	void Start(){
+		gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
+		scoreText = GameObject.Find("score text").GetComponent<Text>();
+		coinText = GameObject.Find("coin text").GetComponent<Text>();
 
-		try{
-			coinText = GameObject.Find("coin text").GetComponent<Text>();
-		}
-		catch (NullReferenceException e) {
-			e.GetHashCode ();//im doing this to get rid of that annoying warning
-		}
-
-		try{
-			gameOverCanvas = GameObject.Find ("Game Over Canvas").GetComponent<Canvas>();
-			scoreText = GameObject.Find("score text").GetComponent<Text>();
-		}
-		catch (NullReferenceException e) {
-			e.GetHashCode ();//im doing this to get rid of that annoying warning
-		}
 		updateCoin ();
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");

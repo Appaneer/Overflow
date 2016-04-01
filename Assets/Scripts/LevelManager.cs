@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class LevelManager : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class LevelManager : MonoBehaviour {
 	public int sum;
 	public HashSet<Node> selectedNodes;
 	public static bool isPaused = false;
+	public GameObject bomb;
+	public GameObject coin;
 
 	public float timeToSpawn = 3.0f;
 	protected float accumulator;
@@ -29,8 +32,15 @@ public class LevelManager : MonoBehaviour {
 					{
 						// the touch is ended so now we can calculate the time and distance
 						int temp = 0;
-						foreach (T node in selectedNodes) {
-							temp += node.value;
+						try{
+							foreach (T node in selectedNodes) {
+								temp += node.value;
+							}
+						}
+						catch(NullReferenceException e){
+							Debug.LogWarning (e.InnerException);
+							Debug.LogWarning (e.Source);
+							selectedNodes.Clear ();
 						}
 						if (temp == sum) {
 							//TODO animation
@@ -62,8 +72,15 @@ public class LevelManager : MonoBehaviour {
 	protected void SpawnNodes(){
 		accumulator -= Time.deltaTime;
 		if (accumulator <= 0.0f) {
-			if(!isPaused)
-				Instantiate (bricks [Random.Range (1, bricks.Length)], spawnPoints [index++].position, Quaternion.Euler(0, 180, 0));
+			if (!isPaused) {
+				int temp = UnityEngine.Random.Range (0, 50);
+				if (temp < 48)
+					Instantiate (bricks [temp % 6], spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
+				else if(temp == 48)
+					Instantiate (bomb, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
+				else if(temp == 49)
+					Instantiate (coin, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
+			}				
 			accumulator = timeToSpawn;
 			if (index == spawnPoints.Length)
 				index = 0;
