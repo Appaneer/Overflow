@@ -64,9 +64,15 @@ public class LevelManager : MonoBehaviour {
 
 	protected void HowShouldINameThis(){
 		if (score >= 20 && score < 40)
-			timeToSpawn = 1.6f;
-		else if (score >= 40)
-			timeToSpawn = 1.3f;
+			timeToSpawn = 1.5f;
+		else if (score >= 40 && score < 60)
+			timeToSpawn = 1.2f;
+		else if (score >= 60 && score < 80)
+			timeToSpawn = 0.9f;
+		else if (score >= 80 && score < 100)
+			timeToSpawn = 0.7f;
+		else if (score >= 100)
+			timeToSpawn = 0.5f;
 	}
 
 	protected void SpawnNodes(){

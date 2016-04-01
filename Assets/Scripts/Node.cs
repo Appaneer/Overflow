@@ -16,9 +16,17 @@ public class Node : MonoBehaviour {
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
-			if (myPowerUp == PowerUp.rowEliminator) {
+			if (myPowerUp == PowerUp.horizontal) {
 				for(int i = 0; i < arr.Length && temp < 6; i++){
 					if(Mathf.Abs(transform.position.y - arr[i].transform.position.y) <= 0.2f){
+						Destroy (arr[i]);
+						temp++;
+					}
+				}
+			}
+			else if (myPowerUp == PowerUp.vertical) {
+				for(int i = 0; i < arr.Length && temp < 6; i++){
+					if(Mathf.Abs(transform.position.x - arr[i].transform.position.x) <= 0.2f){
 						Destroy (arr[i]);
 						temp++;
 					}
@@ -41,7 +49,8 @@ public class Node : MonoBehaviour {
 
 public enum PowerUp
 {
-	rowEliminator,
+	horizontal,
+	vertical,
 	bomb,
 	coin
 };

@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour {
 	public Canvas settingPage;
 	static Canvas gameOverCanvas;
 	public Canvas shopPage;
+	public Canvas purchasedPage;
 	public Button shopButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
@@ -87,14 +88,36 @@ public class UIManager : MonoBehaviour {
 		LevelManager.isPaused = true;
 	}
 
-	public void BuyPowerups(int price){
+	public void BuyBomb(int price){
 		if(PlayerPrefs.GetInt("Coins") >= price){
 			//buy stuff
+			PlayerPrefs.SetInt("NumBomb", PlayerPrefs.GetInt("NumBomb") + 1);
 			CoinManager.Withdraw (price);
 			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
 		}
 	}
 
+	public void BuyHorizontal(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("NumHor", PlayerPrefs.GetInt("NumHor") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
+	}
+
+	public void BuyVertical(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("NumVer", PlayerPrefs.GetInt("NumVer") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
+	}
+		
 	public void BuyRandomNumber(GameObject thisButton){
 		int price = 1;
 		if(PlayerPrefs.GetInt("Coins") >= price){
@@ -103,7 +126,7 @@ public class UIManager : MonoBehaviour {
 			thisButton.SetActive (false);//disable this gameobject
 			randomText.enabled = true;
 			StartCoroutine (RandomNumberAnimation(thisButton));
-
+			StartCoroutine ("DisplayPurchasedPage");
 		}
 	}
 
@@ -138,7 +161,7 @@ public class UIManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
-			LevelManager.DeleteNodes (15);
+			LevelManager.DeleteNodes (10);
 			LevelManager.isPaused = false;
 			gameOverCanvas.enabled = false;
 			break;
@@ -151,12 +174,22 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	public static void updateText(Text txt, int value){
+		txt.text = value + "";
+	}
+
 	public static void updateScore(int score){
 		scoreText.text = score+"";
 	}
 		
 	public static void updateCoin(){
 		coinText.text = PlayerPrefs.GetInt ("Coins")+"";
+	}
+
+	IEnumerator DisplayPurchasedPage(){
+		purchasedPage.enabled = true;
+		yield return new WaitForSeconds (1);
+		purchasedPage.enabled = false;
 	}
 
 	public static bool isHavingWiFi()
