@@ -3,14 +3,23 @@ using System.Collections;
 using UnityEngine.UI;
 public class TutorialText : MonoBehaviour {
 
+	public Text text;
+	public bool fade=false;
 	void Start () {
-		StartCoroutine(wait (3.0f));
+		text = GetComponent<Text> ();
+		StartCoroutine(wait (2f));
 	}
 
 	IEnumerator wait(float seconds)
 	{
-		GetComponent<Text>().enabled = true;
 		yield return new WaitForSeconds (seconds);
-		GetComponent<Text> ().enabled = false;
+		fade = true;
+	}
+	void Update()
+	{
+		if (fade) {
+			Color startColor = text.color;
+			text.color = Color.Lerp (startColor, Color.clear, Time.deltaTime * 6);
+		}
 	}
 }
