@@ -20,7 +20,6 @@ public class UIManager : MonoBehaviour {
 	public Text coinText;
 	//-------tetris/space scene------
 	public Canvas endGameCanvas;
-	public Canvas gameOverCanvas;
 	public Button videoButton;
 	public Text scoreText;
 	public Text scoreText2;
@@ -161,18 +160,16 @@ public class UIManager : MonoBehaviour {
 
 	public static void ShowEndGamePage(){
 		TogglePause ();
-		instance.endGameCanvas.enabled = true;
-		if (!LevelManager.isWatchedAds)
-			instance.videoButton.gameObject.SetActive (true);
+		if (LevelManager.isWatchedAds) 
+			instance.ShowGameOverPage ();
 		else
-			instance.videoButton.gameObject.SetActive (false);
+			instance.endGameCanvas.enabled = true;
 	}
 
 	public void ShowGameOverPage(){
 		if(LevelManager.score > PlayerPrefs.GetInt("HighScore")){
 			PlayerPrefs.SetInt ("HighScore", LevelManager.score);
 		}
-		gameOverCanvas.enabled = true;
 		gameOverAnim.SetTrigger ("GameOver");
 		scoreText2.text = "Score\n"+LevelManager.score;
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
@@ -188,6 +185,14 @@ public class UIManager : MonoBehaviour {
 			Advertisement.Show("rewardedVideo", options);
 		}
 	}
+		
+	IEnumerator DeleteNodes(){
+		LevelManager.DeleteNodes (8);
+		yield return new WaitForSeconds (0.75f);
+		LevelManager.isPaused = false;
+		LevelManager.isWatchedAds = true;
+		instance.endGameCanvas.enabled = false;
+	}
 
 	private void HandleShowResult(ShowResult result)
 	{
@@ -198,12 +203,8 @@ public class UIManager : MonoBehaviour {
 			if (flag) {
 				CoinManager.Deposit (111);
 				coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
-			} else {
-				LevelManager.DeleteNodes (8);
-				LevelManager.isPaused = false;
-				LevelManager.isWatchedAds = true;
-				endGameCanvas.enabled = false;
-			}
+			} else 
+				StartCoroutine ("DeleteNodes");
 			break;
 		case ShowResult.Skipped:
 			Debug.Log("The ad was skipped before reaching the end.");
