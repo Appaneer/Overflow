@@ -5,21 +5,29 @@ using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using System.Net;
 using System;
-public class UIManager : MonoBehaviour {
 
+public class UIManager : MonoBehaviour {
+	//------langing scene-------
 	public Canvas gamePage;//this canvas contains everything but shop page
 	public Canvas creditPage;
 	public Canvas settingPage;
-	public Canvas gameOverCanvas;
 	public Canvas shopPage;
 	public Canvas purchasedPage;
 	public Button shopButton;
-	public Button videoButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	public Text randomText;
 	public Text coinText;
+	//-------tetris/space scene------
+	public Canvas endGameCanvas;
+	public Canvas gameOverCanvas;
+	public Button videoButton;
 	public Text scoreText;
+	public Text scoreText2;
+	public Text highScoreText;
+	public Text coinText2;
+	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
+
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
@@ -152,15 +160,26 @@ public class UIManager : MonoBehaviour {
 
 	public static void ShowEndGamePage(){
 		TogglePause ();
-		instance.gameOverCanvas.enabled = true;
+		instance.endGameCanvas.enabled = true;
 		if (!LevelManager.isWatchedAds)
 			instance.videoButton.gameObject.SetActive (true);
 		else
 			instance.videoButton.gameObject.SetActive (false);
 	}
 
-	public void ShowRewardedAd()
+	public void ShowGameOverPage(){
+		if(LevelManager.score > PlayerPrefs.GetInt("HighScore")){
+			PlayerPrefs.SetInt ("HighScore", LevelManager.score);
+		}
+		gameOverCanvas.enabled = true;
+		scoreText2.text = "Score\n"+LevelManager.score;
+		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
+		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+	}
+
+	public void ShowRewardedAd(bool isCoinRewarded)
 	{
+		flag = isCoinRewarded;
 		if (Advertisement.IsReady("rewardedVideo") && isHavingWiFi())
 		{
 			var options = new ShowOptions { resultCallback = HandleShowResult };
@@ -174,10 +193,15 @@ public class UIManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
-			LevelManager.DeleteNodes (8);
-			LevelManager.isPaused = false;
-			LevelManager.isWatchedAds = true;
-			gameOverCanvas.enabled = false;
+			if (flag) {
+				CoinManager.Deposit (111);
+				coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+			} else {
+				LevelManager.DeleteNodes (8);
+				LevelManager.isPaused = false;
+				LevelManager.isWatchedAds = true;
+				endGameCanvas.enabled = false;
+			}
 			break;
 		case ShowResult.Skipped:
 			Debug.Log("The ad was skipped before reaching the end.");

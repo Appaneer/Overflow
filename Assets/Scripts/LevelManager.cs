@@ -6,7 +6,7 @@ using System;
 public class LevelManager : MonoBehaviour {
 
 	public GameObject[] bricks;
-	protected int score;
+	public static int score;
 	public Transform[] spawnPoints;
 	protected int index;
 	public int sum;
@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour {
 
 	protected void GetInput<T>() where T : Node{
 		RaycastHit hit;
-		if (Input.touchCount == 1) {
+		if (Input.touchCount == 1 && !isPaused) {
 
 			foreach (Touch touch in Input.touches) {
 				if (Physics.Raycast (Camera.main.ScreenPointToRay (touch.position), out hit)) {
