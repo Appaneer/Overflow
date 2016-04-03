@@ -63,15 +63,15 @@ public class LevelManager : MonoBehaviour {
 
 	protected void HowShouldINameThis(){
 		if (score >= 20 && score < 40)
-			timeToSpawn = 1.5f;
+			timeToSpawn = 1.6f;
 		else if (score >= 40 && score < 60)
 			timeToSpawn = 1.2f;
 		else if (score >= 60 && score < 80)
-			timeToSpawn = 0.9f;
+			timeToSpawn = 0.8f;
 		else if (score >= 80 && score < 100)
-			timeToSpawn = 0.7f;
+			timeToSpawn = 0.4f;
 		else if (score >= 100)
-			timeToSpawn = 0.5f;
+			timeToSpawn = 0.2f;
 	}
 
 	protected void SpawnNodes(){
@@ -95,7 +95,7 @@ public class LevelManager : MonoBehaviour {
 	public static void DeleteNodes(int amount){
 		GameObject[] arr = GameObject.FindGameObjectsWithTag("Node");
 		for (int i = arr.Length - 1; i >= arr.Length - 1 - amount; i--) {
-			Destroy (arr [i]);
+			arr [i].GetComponent<Node> ().Destroy ();
 		}
 	}
 }

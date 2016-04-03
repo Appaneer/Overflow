@@ -82,8 +82,9 @@ public class TetrisLevelManager : LevelManager {
 		PlayerPrefs.SetInt ("Num"+number, PlayerPrefs.GetInt("Num"+number) - 1);
 		UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		foreach(GameObject i in arr){
-			if(i.GetComponent<Node>().value == number)
-				Destroy (i);
+			Node tempNode = i.GetComponent<Node> ();
+			if (tempNode.value == number)
+				tempNode.Destroy ();
 		}
 	}
 
