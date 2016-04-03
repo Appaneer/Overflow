@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour {
 	public Text highScoreText;
 	public Text coinText2;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
+	public Animator gameOverAnim;
 
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
@@ -172,6 +173,7 @@ public class UIManager : MonoBehaviour {
 			PlayerPrefs.SetInt ("HighScore", LevelManager.score);
 		}
 		gameOverCanvas.enabled = true;
+		gameOverAnim.SetTrigger ("GameOver");
 		scoreText2.text = "Score\n"+LevelManager.score;
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
 		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");

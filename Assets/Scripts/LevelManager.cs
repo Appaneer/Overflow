@@ -39,8 +39,6 @@ public class LevelManager : MonoBehaviour {
 							}
 						}
 						catch(NullReferenceException e){
-							Debug.LogWarning (e.InnerException);
-							Debug.LogWarning (e.Source);
 							selectedNodes.Clear ();
 						}
 						if (temp == sum) {
@@ -49,7 +47,7 @@ public class LevelManager : MonoBehaviour {
 							HowShouldINameThis ();
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
-								Destroy (node.gameObject);
+								node.Destroy ();
 							}
 						} else {
 							//TODO wrong sum animation 

@@ -8,6 +8,7 @@ public class GravityNode : Node {
 	Rigidbody rb;
 
 	void Start () {
+		anim = gameObject.GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody> ();
 		if (value != 0)
 			isPowerUp = false;

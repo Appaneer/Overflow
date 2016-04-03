@@ -12,6 +12,7 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject vertical;
 
 	void Start(){
+		isPaused = false;
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}

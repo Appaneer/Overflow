@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
+		isPaused = false;
 		accumulator = timeToSpawn;
 		score = 0;
 		index = 0;

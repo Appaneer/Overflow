@@ -6,13 +6,15 @@ public class Node : MonoBehaviour {
 	public int value;
 	public bool isPowerUp;
 	public PowerUp myPowerUp;
+	protected Animator anim;
 
 	void Start(){
+		anim = gameObject.GetComponent<Animator> ();
 		if (value != 0)
 			isPowerUp = false;
 	}
 
-	void OnDestroy(){
+	public void Destroy(){
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
@@ -44,6 +46,13 @@ public class Node : MonoBehaviour {
 				CoinManager.Deposit (1);
 			}
 		}
+		StartCoroutine (WaitForSeconds(0.65f));
+	}
+
+	IEnumerator WaitForSeconds(float second){
+		anim.SetTrigger ("Destroy");
+		yield return new WaitForSeconds (second);
+		Destroy (gameObject);
 	}
 }
 
