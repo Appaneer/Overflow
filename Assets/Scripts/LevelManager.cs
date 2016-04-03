@@ -9,16 +9,20 @@ public class LevelManager : MonoBehaviour {
 	public static int score;
 	public Transform[] spawnPoints;
 	protected int index;
-	public int sum;
+	private static int sum;
 	public HashSet<Node> selectedNodes;
 	public static bool isPaused = false;
 	public GameObject bomb;
 	public GameObject coin;
 	public static bool isWatchedAds;
-
+	public bool tetris;
 	public float timeToSpawn;
 	protected float accumulator;
 
+	public static void setSum(int value)
+	{
+		sum = value;
+	}
 	protected void GetInput<T>() where T : Node{
 		RaycastHit hit;
 		if (Input.touchCount == 1 && !isPaused) {
@@ -32,10 +36,17 @@ public class LevelManager : MonoBehaviour {
 				case TouchPhase.Ended:
 					{
 						// the touch is ended so now we can calculate the time and distance
-						int temp = 0;
+						int temp;
+						if(tetris)
+						temp = 0;
+						else
+						temp=1;
 						try{
 							foreach (T node in selectedNodes) {
+								if(tetris)
 								temp += node.value;
+								else
+									temp*=node.value;
 							}
 						}
 						catch(NullReferenceException e){
