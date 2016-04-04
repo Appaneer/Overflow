@@ -241,7 +241,7 @@ public class UIManager : MonoBehaviour {
 
 	IEnumerator DisplayPurchasedPage(){
 		purchasedPage.enabled = true;
-		yield return new WaitForSeconds (1);
+		yield return new WaitForSeconds (0.75f);
 		purchasedPage.enabled = false;
 	}
 
