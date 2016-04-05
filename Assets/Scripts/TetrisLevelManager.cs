@@ -10,14 +10,8 @@ public class TetrisLevelManager : LevelManager {
 
 	public GameObject horizontal;
 	public GameObject vertical;
-	float timeToChange ;
-	float acc;
-	public int target;
-	void Start(){
-		timeToChange = 10.0f;
-		LevelManager.setSum (10);
-		UIManager.updateSum(10);
 
+	void Start(){
 		isPaused = false;
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
@@ -31,21 +25,9 @@ public class TetrisLevelManager : LevelManager {
 		index = 0;
 		isWatchedAds = false;
 		InitMap ();
-
-		acc= timeToChange;
 	}
 
 	void Update(){
-		acc -= Time.deltaTime;
-		if (acc <= 0.0f) {
-			target= Random.Range (10, 20);
-			LevelManager.setSum (target);
-			UIManager.updateSum (target);
-
-			timeToChange = Random.Range (10.0f, 15.0f);
-			acc = timeToChange;
-		}
-			
 		SpawnNodes ();
 		GetInput<Node> ();
 	}

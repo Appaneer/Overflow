@@ -17,7 +17,6 @@ public class UIManager : MonoBehaviour {
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	public Text randomText;
-
 	public Text coinText;
 	//-------tetris/space scene------
 	public Canvas endGameCanvas;
@@ -28,8 +27,7 @@ public class UIManager : MonoBehaviour {
 	public Text coinText2;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
-	public Text targetText;
-	public Text prodText;
+
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
@@ -224,16 +222,6 @@ public class UIManager : MonoBehaviour {
 	public static void updateScore(int score){
 		instance.scoreText.text = score+"";
 	}
-
-
-	public static void updateProduct(int prod){
-		instance.prodText.text = "Multiply To "+prod;
-	}
-
-	public static void updateSum(int sum){
-		instance.targetText.text = "Sum To "+sum;
-	}
-
 		
 	public static void updateCoin(){
 		instance.coinText.text = PlayerPrefs.GetInt ("Coins")+"";
