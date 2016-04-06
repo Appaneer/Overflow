@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour {
 	public static int score;
 	public Transform[] spawnPoints;
 	protected int index;
-	public int sum;
+	public static int sum;
 	public HashSet<Node> selectedNodes;
 	public static bool isPaused = false;
 	public GameObject bomb;
@@ -18,6 +18,10 @@ public class LevelManager : MonoBehaviour {
 
 	public float timeToSpawn;
 	protected float accumulator;
+
+	public static void SetSum(int s){
+		sum = s;
+	}
 
 	protected void GetInput<T>() where T : Node{
 		RaycastHit hit;
@@ -39,18 +43,19 @@ public class LevelManager : MonoBehaviour {
 							}
 						}
 						catch(NullReferenceException e){
+							Debug.Log (e.Message);
 							selectedNodes.Clear ();
 						}
 						if (temp == sum) {
-							//TODO animation
 							score += selectedNodes.Count;
-							HowShouldINameThis ();
+							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.01x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();
 							}
 						} else {
 							//TODO wrong sum animation 
+							UIManager.TriggerDisplaySumText (temp);
 						}
 						temp = 0;
 						selectedNodes = new HashSet<Node> ();
@@ -59,19 +64,6 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
-	}
-
-	protected void HowShouldINameThis(){
-		if (score >= 20 && score < 40)
-			timeToSpawn = 1.6f;
-		else if (score >= 40 && score < 60)
-			timeToSpawn = 1.2f;
-		else if (score >= 60 && score < 80)
-			timeToSpawn = 0.8f;
-		else if (score >= 80 && score < 100)
-			timeToSpawn = 0.4f;
-		else if (score >= 100)
-			timeToSpawn = 0.2f;
 	}
 
 	protected void SpawnNodes(){

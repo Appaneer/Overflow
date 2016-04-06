@@ -49,7 +49,7 @@ public class Node : MonoBehaviour {
 				CoinManager.Deposit (1);
 			}
 		}
-		StartCoroutine (WaitForSeconds(0.65f));
+		StartCoroutine (WaitForSeconds(0.5f));
 	}
 
 	IEnumerator WaitForSeconds(float second){

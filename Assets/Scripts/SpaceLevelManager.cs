@@ -12,6 +12,8 @@ public class SpaceLevelManager : LevelManager {
 		selectedNodes = new HashSet<Node> ();
 		isWatchedAds = false;
 		InitMap ();
+		SetSum (UnityEngine.Random.Range(10,19));
+		UIManager.UpdateSumText (sum);
 	}
 
 	void Update(){

@@ -7,7 +7,7 @@ public class TutorialText : MonoBehaviour {
 	public bool fade=false;
 	void Start () {
 		text = GetComponent<Text> ();
-		StartCoroutine(wait (2f));
+		StartCoroutine(wait (1f));
 	}
 
 	IEnumerator wait(float seconds)

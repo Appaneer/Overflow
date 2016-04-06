@@ -27,6 +27,9 @@ public class UIManager : MonoBehaviour {
 	public Text coinText2;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
+	public Animator displaySumAnim;
+	public Text targetSumText;
+	public Text displaySumText;
 
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
@@ -52,6 +55,17 @@ public class UIManager : MonoBehaviour {
 	void Update(){
 		if (Input.GetKey (KeyCode.Escape))
 			LoadLandingPage ();
+	}
+
+	public static void TriggerDisplaySumText(int sum){
+		instance.displaySumText.text = "" + sum;
+		instance.StartCoroutine ("blahblahblah");
+	}
+
+	IEnumerator blahblahblah(){
+		instance.displaySumAnim.SetBool ("DisplaySum",true);
+		yield return new WaitForSeconds (0.3f);
+		instance.displaySumAnim.SetBool ("DisplaySum",false);
 	}
 
 	public void LoadTetrisLevel(){
@@ -225,6 +239,10 @@ public class UIManager : MonoBehaviour {
 		
 	public static void updateCoin(){
 		instance.coinText.text = PlayerPrefs.GetInt ("Coins")+"";
+	}
+
+	public static void UpdateSumText(int sum){
+		instance.targetSumText.text = "SUM: " + sum;
 	}
 
 	IEnumerator DisplayPurchasedPage(){
