@@ -44,12 +44,10 @@ public class TetrisLevelManager : LevelManager {
 
 	public void SpawnPowerups(string powerups){
 		int temp;
-		if (index == 0)
-			temp = spawnPoints.Length - 1;
-		else if (index == 1)
+		if (index == spawnPoints.Length - 1)
 			temp = 0;
 		else
-			temp = index - 2;
+			temp = index + 1;
 		switch (powerups) {
 		case "horizontal":
 			if (PlayerPrefs.GetInt ("NumHor") <= 0)
