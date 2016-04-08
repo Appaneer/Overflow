@@ -150,28 +150,6 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void BuyRandomNumber(GameObject thisButton){
-		int price = 1;
-		if(PlayerPrefs.GetInt("Coins") >= price){
-			CoinManager.Withdraw (price);
-			updateCoin ();
-			thisButton.SetActive (false);//disable this gameobject
-			randomText.enabled = true;
-			StartCoroutine (RandomNumberAnimation(thisButton));
-		}
-	}
-
-	private IEnumerator RandomNumberAnimation(GameObject thisButton){
-		for(int i = 30; i >= 1; i--){
-			randomText.text = UnityEngine.Random.Range (11,20)+"";
-			yield return new WaitForSeconds (0.4f / i);
-		}
-		yield return new WaitForSeconds (3);
-		Debug.Log ("Your number is "+int.Parse(randomText.text));
-		thisButton.SetActive (true);
-		randomText.enabled = false;
-	}
-
 	public static void ShowEndGamePage(){
 		TogglePause ();
 		if (LevelManager.isWatchedAds) 
