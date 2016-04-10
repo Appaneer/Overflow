@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour {
 	public Animator displaySumAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-
+	public Text currentSum;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
@@ -221,6 +221,10 @@ public class UIManager : MonoBehaviour {
 
 	public static void UpdateSumText(int sum){
 		instance.targetSumText.text = "SUM: " + sum;
+	}
+
+	public static void updateCurrentSum(int sum){
+		instance.currentSum.text = "CURRENT SUM: " + sum;
 	}
 
 	IEnumerator DisplayPurchasedPage(){

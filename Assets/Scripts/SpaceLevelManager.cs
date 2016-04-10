@@ -17,6 +17,8 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void Update(){
+
+		UIManager.updateCurrentSum (temp);
 		SpawnNodes ();
 		GetInput<Node> ();
 	}
