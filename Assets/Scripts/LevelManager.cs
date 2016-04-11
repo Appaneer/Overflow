@@ -15,14 +15,9 @@ public class LevelManager : MonoBehaviour {
 	public GameObject bomb;
 	public GameObject coin;
 	public static bool isWatchedAds;
-	public static AudioSource audio;
+
 	public float timeToSpawn;
 	protected float accumulator;
-	public int temp=0;
-	void Start()
-	{
-		audio = GetComponent<AudioSource> ();
-	}
 
 	public static void SetSum(int s){
 		sum = s;
@@ -31,25 +26,19 @@ public class LevelManager : MonoBehaviour {
 	protected void GetInput<T>() where T : Node{
 		RaycastHit hit;
 		if (Input.touchCount == 1 && !isPaused) {
+
 			foreach (Touch touch in Input.touches) {
 				if (Physics.Raycast (Camera.main.ScreenPointToRay (touch.position), out hit)) {
 					selectedNodes.Add (hit.transform.gameObject.GetComponent<T> ());
-
-					string childLocation =hit.transform.gameObject + "/Quad";
-					GameObject childObject = GameObject.Find (childLocation);
-					childObject.GetComponent<MeshRenderer>().enabled=true;
 				}
 
 				switch (touch.phase) {
 				case TouchPhase.Ended:
 					{
 						// the touch is ended so now we can calculate the time and distance
-						temp = 0;
+						int temp = 0;
 						try{
 							foreach (T node in selectedNodes) {
-								string childLocation =node + "/Quad";
-								GameObject childObject = GameObject.Find (childLocation);
-								childObject.GetComponent<MeshRenderer>().enabled=false;
 								temp += node.value;
 							}
 						}
@@ -57,14 +46,12 @@ public class LevelManager : MonoBehaviour {
 							Debug.Log (e.Message);
 							selectedNodes.Clear ();
 						}
-
 						if (temp == sum) {
 							score += selectedNodes.Count;
 							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.01x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();
-								audio.Play ();
 							}
 						} else {
 							//TODO wrong sum animation 
