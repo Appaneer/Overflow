@@ -12,6 +12,7 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject vertical;
 
 	void Start(){
+		audioSource = GetComponent<AudioSource> ();
 		SetSum (UnityEngine.Random.Range(10,19));
 		UIManager.UpdateSumText (sum);
 		isPaused = false;

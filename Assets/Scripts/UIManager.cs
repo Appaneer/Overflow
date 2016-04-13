@@ -30,7 +30,6 @@ public class UIManager : MonoBehaviour {
 	public Animator displaySumAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-	public Text currentSum;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
@@ -211,20 +210,27 @@ public class UIManager : MonoBehaviour {
 		txt.text = value + "";
 	}
 
+	/// <summary>
+	/// Updates the current score.
+	/// </summary>
+	/// <param name="score">Score.</param>
 	public static void updateScore(int score){
 		instance.scoreText.text = score+"";
 	}
-		
+
+	/// <summary>
+	/// Updates amount of coin that the player has.
+	/// </summary>
 	public static void updateCoin(){
 		instance.coinText.text = PlayerPrefs.GetInt ("Coins")+"";
 	}
 
+	/// <summary>
+	/// Updates the sum.
+	/// </summary>
+	/// <param name="sum">Sum.</param>
 	public static void UpdateSumText(int sum){
 		instance.targetSumText.text = "SUM: " + sum;
-	}
-
-	public static void updateCurrentSum(int sum){
-		instance.currentSum.text = "CURRENT SUM: " + sum;
 	}
 
 	IEnumerator DisplayPurchasedPage(){
@@ -233,6 +239,10 @@ public class UIManager : MonoBehaviour {
 		purchasedPage.enabled = false;
 	}
 
+	/// <summary>
+	/// Is the device connected to internet
+	/// </summary>
+	/// <returns><c>true</c>, device has internet connection, <c>false</c> device doesn't have internet connection.</returns>
 	public static bool isHavingWiFi()
 	{
 		#if UNITY_EDITOR
@@ -251,6 +261,15 @@ public class UIManager : MonoBehaviour {
 		
 	}
 
+	/// <summary>
+	/// Shares to facebook.
+	/// </summary>
+	/// <param name="linkParameter">Link.</param>
+	/// <param name="nameParameter">Name.</param>
+	/// <param name="captionParameter">Caption.</param>
+	/// <param name="descriptionParameter">Description.</param>
+	/// <param name="pictureParameter">Picture.</param>
+	/// <param name="redirectParameter">Redirect.</param>
 	void ShareToFacebook (string linkParameter, string nameParameter, string captionParameter, string descriptionParameter, string pictureParameter, string redirectParameter)
 	{
 		Application.OpenURL (FACEBOOK_URL + "?app_id=" + FACEBOOK_APP_ID +

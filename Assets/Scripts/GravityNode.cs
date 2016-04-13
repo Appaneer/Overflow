@@ -8,6 +8,7 @@ public class GravityNode : Node {
 	Rigidbody rb;
 
 	void Start () {
+		semiTransparentQuad = GetComponentsInChildren<Transform> () [2];
 		anim = gameObject.GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody> ();
 		if (value != 0)

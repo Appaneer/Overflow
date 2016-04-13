@@ -3,17 +3,28 @@ using System.Collections;
 
 public class Node : MonoBehaviour {
 
+	/// <summary>
+	/// The value of this node
+	/// </summary>
 	public int value;
 	public bool isPowerUp;
 	public PowerUp myPowerUp;
+	/// <summary>
+	/// The semi transparent quad. Used for indicated current node has been selected
+	/// </summary>
+	public Transform semiTransparentQuad;
 	protected Animator anim;
 
 	void Start(){
+		semiTransparentQuad = GetComponentsInChildren<Transform> () [2];
 		anim = gameObject.GetComponent<Animator> ();
 		if (value != 0)
 			isPowerUp = false;
 	}
 
+	/// <summary>
+	/// Destroy this instance.
+	/// </summary>
 	public void Destroy(){
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
@@ -57,8 +68,22 @@ public class Node : MonoBehaviour {
 		yield return new WaitForSeconds (second);
 		Destroy (gameObject);
 	}
-}
 
+	/// <summary>
+	/// Displaies the semi transparent quad to indicate this node has been selected.
+	/// </summary>
+	public void DisplayQuad(){
+		semiTransparentQuad.localPosition = new Vector3(0f,0f,1f);
+	}
+
+	/// <summary>
+	/// Hides the semi transparent quad to indicate this node has been deselected.
+	/// </summary>
+	public void HideQuad(){
+		semiTransparentQuad.localPosition = new Vector3(0f,0f,0f);
+	}
+}
+	
 public enum PowerUp
 {
 	horizontal,

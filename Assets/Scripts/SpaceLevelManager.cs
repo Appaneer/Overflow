@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
+		audioSource = GetComponent<AudioSource> ();
 		isPaused = false;
 		accumulator = timeToSpawn;
 		score = 0;
@@ -17,8 +18,6 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void Update(){
-
-		UIManager.updateCurrentSum (temp);
 		SpawnNodes ();
 		GetInput<Node> ();
 	}
