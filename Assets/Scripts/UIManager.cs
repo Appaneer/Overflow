@@ -193,7 +193,7 @@ public class UIManager : MonoBehaviour {
 			Debug.Log ("The ad was successfully shown.");
 			if (flag) {
 				CoinManager.Deposit (111);
-				coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+				UIManager.updateCoin ();
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;

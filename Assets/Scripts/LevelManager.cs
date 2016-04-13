@@ -19,6 +19,7 @@ public abstract class LevelManager : MonoBehaviour {
 	protected float accumulator;
 
 	public AudioClip coinSFX;
+	public AudioClip popSFX;
 	protected AudioSource audioSource;
 
 	//this is abstract class, it shouldn't have Start() or Update()
@@ -46,9 +47,25 @@ public abstract class LevelManager : MonoBehaviour {
 					{
 						// the touch is ended so now we can calculate the time and distance
 						int temp = 0;
+						bool isCoin = false, isBomb = false, isEliminator = false;
 						try{
 							foreach (T node in selectedNodes) {
-								temp += node.value;
+								if(node.value == 0){
+									switch(node.myPowerUp){
+									case PowerUp.coin:
+										isCoin = true;
+										break;
+									case PowerUp.bomb:
+										isCoin = true;
+										break;
+									case PowerUp.horizontal:
+									case PowerUp.vertical:
+										isEliminator = true;
+										break;
+									}
+								}
+								else
+									temp += node.value;
 								node.HideQuad();
 							}
 						}
@@ -58,15 +75,21 @@ public abstract class LevelManager : MonoBehaviour {
 						}
 
 						if (temp == sum) {
-							audioSource.PlayOneShot (coinSFX);
+							if(!isCoin && !isBomb && !isEliminator)
+								audioSource.PlayOneShot (popSFX);
+							else if(isBomb)//if this is a bomb
+								audioSource.PlayOneShot (coinSFX);
+							else if(isEliminator)//if this is a hor/vert eliminator
+								audioSource.PlayOneShot (coinSFX);
+							else//if this is a coin
+								audioSource.PlayOneShot (coinSFX);
 							score += selectedNodes.Count;
-							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.01x + 2(y is timeToSpawn and x is score)
+							timeToSpawn = -0.02f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();
 							}
 						} else {
-							//TODO wrong sum animation 
 							UIManager.TriggerDisplaySumText (temp);
 						}
 						temp = 0;
