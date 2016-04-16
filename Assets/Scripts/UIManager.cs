@@ -14,8 +14,12 @@ public class UIManager : MonoBehaviour {
 	public Canvas shopPage;
 	public Canvas purchasedPage;
 	public Button shopButton;
+	public Button creditButton;
+	public Button settingButton;
+	public Button shareButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
+	public GameObject Border;
 	public Text randomText;
 	public Text coinText;
 	//-------tetris/space scene------
@@ -82,16 +86,23 @@ public class UIManager : MonoBehaviour {
 	public void ToggleCreditPage(){
 		ToggleButton ();
 		creditPage.enabled =  creditPage.enabled ? false : true;
+		settingButton.enabled = settingButton.enabled ? false : true;
+		shareButton.enabled = shareButton.enabled ? false : true;
 	}
 
 	public void ToggleSettingPage(){
 		ToggleButton ();
 		settingPage.enabled = settingPage.enabled ? false : true;
+		creditButton.enabled = creditButton.enabled ? false : true;
+		shareButton.enabled = shareButton.enabled ? false : true;
 	}
 
 	public void ToggleShopPage(){
 		gamePage.enabled = gamePage.enabled ? false : true;
 		shopPage.enabled = shopPage.enabled ? false : true;
+		MeshRenderer quad = Border.GetComponent<MeshRenderer> ();
+		quad.enabled=quad.enabled ?false: true;
+
 		updateCoin ();
 	}
 
