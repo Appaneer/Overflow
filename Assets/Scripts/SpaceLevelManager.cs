@@ -13,7 +13,10 @@ public class SpaceLevelManager : LevelManager {
 		selectedNodes = new HashSet<Node> ();
 		isWatchedAds = false;
 		InitMap ();
-		SetSum (UnityEngine.Random.Range(10,19));
+		if (PlayerPrefs.GetInt ("NextSum") == 0)
+			SetSum (UnityEngine.Random.Range (10, 19));
+		else
+			SetSum (PlayerPrefs.GetInt ("NextSum"));
 		UIManager.UpdateSumText (sum);
 	}
 

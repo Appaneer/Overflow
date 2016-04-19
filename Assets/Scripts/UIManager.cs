@@ -160,6 +160,59 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	public void BuySum(int number){
+		int price = 0;
+		switch(number){
+		case 10:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 11:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 12:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 13:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 14:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 15:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 16:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 17:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		case 18:
+			price = 1;
+			if (PlayerPrefs.GetInt ("Coins") >= price) 
+				PlayerPrefs.SetInt ("NextSum", number);
+			break;
+		}
+		CoinManager.Withdraw (price);
+		updateCoin ();
+	}
+
 	public static void ShowEndGamePage(){
 		TogglePause ();
 		if (LevelManager.isWatchedAds) 
@@ -176,6 +229,7 @@ public class UIManager : MonoBehaviour {
 		scoreText2.text = "Score\n"+LevelManager.score;
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
 		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+		PlayerPrefs.SetInt ("NextSum", 0);
 	}
 
 	public void ShowRewardedAd(bool isCoinRewarded)
@@ -204,7 +258,7 @@ public class UIManager : MonoBehaviour {
 			Debug.Log ("The ad was successfully shown.");
 			if (flag) {
 				CoinManager.Deposit (111);
-				UIManager.updateCoin ();
+				updateCoin ();
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;
