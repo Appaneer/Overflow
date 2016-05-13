@@ -11,7 +11,14 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject horizontal;
 	public GameObject vertical;
 
+	/// <summary>
+	/// The number of nodes in columns.
+	/// [0] indicates the # of nodes in the first column.
+	/// </summary>
+	public static int[] numberOfNodesInCol;
+
 	void Start(){
+		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		audioSource = GetComponent<AudioSource> ();
 		if (PlayerPrefs.GetInt ("NextSum") == 0)
 			SetSum (UnityEngine.Random.Range (10, 19));
@@ -41,8 +48,36 @@ public class TetrisLevelManager : LevelManager {
 	void InitMap(){
 		for(float r = 0; r < height; r++){
 			for(float c = 0; c < width; c++){
-				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2.5f, r-2), Quaternion.Euler(0, 180, 0));
+				GameObject tempNode = Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (c-2.5f, r-2), Quaternion.Euler(0, 180, 0)) as GameObject;
+				tempNode.GetComponent<Node> ().col = ((int)c)+1;
 			}
+		}
+	}
+
+	public override void SpawnNodes (){
+		accumulator -= Time.deltaTime;
+		if (accumulator <= 0.0f) {
+			if (!isPaused) {
+				index = 0;
+				int min = numberOfNodesInCol [0];
+				for(int i = 0; i < numberOfNodesInCol.Length; i++ ){
+					if (numberOfNodesInCol [i] < min) {
+						index = i;
+						min = numberOfNodesInCol [i];
+					}
+				}
+				int temp = UnityEngine.Random.Range (0, 50);
+				GameObject hii;
+				if (temp < 48)
+					hii = Instantiate (bricks [temp % 6], spawnPoints [index].position, Quaternion.Euler (0, 180, 0)) as GameObject;
+				else if(temp == 48)
+					hii = Instantiate (bomb, spawnPoints [index].position, Quaternion.Euler (0, 180, 0)) as GameObject;
+				else
+					hii = Instantiate (coin, spawnPoints [index].position, Quaternion.Euler (0, 180, 0)) as GameObject;
+				hii.GetComponent<Node> ().col = index + 1;
+				++TetrisLevelManager.numberOfNodesInCol [index];
+			}				
+			accumulator = timeToSpawn;
 		}
 	}
 

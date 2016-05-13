@@ -15,6 +15,11 @@ public class Node : MonoBehaviour {
 	public Transform semiTransparentQuad;
 	protected Animator anim;
 
+	/// <summary>
+	/// The column position of the node, range 1-6, 1 being the far last 6 being the far right
+	/// </summary>
+	public int col;
+
 	void Start(){
 		semiTransparentQuad = GetComponentsInChildren<Transform> () [2];
 		anim = gameObject.GetComponent<Animator> ();
@@ -59,6 +64,10 @@ public class Node : MonoBehaviour {
 			else if(myPowerUp == PowerUp.coin){
 				CoinManager.Deposit (1);
 			}
+		}
+		if (col != 0) {
+			//this means the current level is tetris level but not space level
+			--TetrisLevelManager.numberOfNodesInCol[col - 1];
 		}
 		StartCoroutine (WaitForSeconds(0.5f));
 	}

@@ -84,7 +84,7 @@ public abstract class LevelManager : MonoBehaviour {
 							else//if this is a coin
 								audioSource.PlayOneShot (coinSFX);
 							score += selectedNodes.Count;
-							timeToSpawn = -0.02f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
+							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();
@@ -101,7 +101,7 @@ public abstract class LevelManager : MonoBehaviour {
 		}
 	}
 
-	protected void SpawnNodes(){
+	public virtual void SpawnNodes (){
 		accumulator -= Time.deltaTime;
 		if (accumulator <= 0.0f) {
 			if (!isPaused) {
