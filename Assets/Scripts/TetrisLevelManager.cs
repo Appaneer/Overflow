@@ -20,23 +20,12 @@ public class TetrisLevelManager : LevelManager {
 	void Start(){
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		audioSource = GetComponent<AudioSource> ();
-		if (PlayerPrefs.GetInt ("NextSum") == 0)
-			SetSum (UnityEngine.Random.Range (10, 19));
-		else
-			SetSum (PlayerPrefs.GetInt ("NextSum"));
 		UIManager.UpdateSumText (sum);
 		isPaused = false;
-		for(int number = 1; number <= 6; number++){
-			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
-		}
-		UIManager.updateText (GameObject.Find("horizontal text").GetComponent<Text>(), PlayerPrefs.GetInt("NumHor"));
-		UIManager.updateText (GameObject.Find("vertical text").GetComponent<Text>(), PlayerPrefs.GetInt("NumVer"));
-		UIManager.updateText (GameObject.Find("bomb text").GetComponent<Text>(), PlayerPrefs.GetInt("NumBomb"));
 		accumulator = timeToSpawn;
 		selectedNodes = new HashSet<Node> ();
 		score = 0;
 		index = 0;
-		isWatchedAds = false;
 		InitMap ();
 	}
 
