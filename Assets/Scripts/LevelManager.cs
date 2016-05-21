@@ -22,12 +22,6 @@ public abstract class LevelManager : MonoBehaviour {
 	public AudioClip popSFX;
 	protected AudioSource audioSource;
 
-	//this is abstract class, it shouldn't have Start() or Update()
-
-	/// <summary>
-	/// Sets the sum.
-	/// </summary>
-	/// <param name="s">Sum</param>
 	public static void SetSum(int s){
 		sum = s;
 	}
@@ -75,14 +69,7 @@ public abstract class LevelManager : MonoBehaviour {
 						}
 
 						if (temp == sum) {
-							if(!isCoin && !isBomb && !isEliminator)
-								audioSource.PlayOneShot (popSFX);
-							else if(isBomb)//if this is a bomb
-								audioSource.PlayOneShot (coinSFX);
-							else if(isEliminator)//if this is a hor/vert eliminator
-								audioSource.PlayOneShot (coinSFX);
-							else//if this is a coin
-								audioSource.PlayOneShot (coinSFX);
+							audioSource.PlayOneShot (popSFX);
 							score += selectedNodes.Count;
 							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
@@ -105,13 +92,11 @@ public abstract class LevelManager : MonoBehaviour {
 		accumulator -= Time.deltaTime;
 		if (accumulator <= 0.0f) {
 			if (!isPaused) {
-				int temp = UnityEngine.Random.Range (0, 50);
+				int temp = UnityEngine.Random.Range (0, 49);
 				if (temp < 48)
 					Instantiate (bricks [temp % 6], spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
 				else if(temp == 48)
 					Instantiate (bomb, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
-				else if(temp == 49)
-					Instantiate (coin, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
 			}				
 			accumulator = timeToSpawn;
 			if (index == spawnPoints.Length)
