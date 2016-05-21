@@ -41,25 +41,9 @@ public abstract class LevelManager : MonoBehaviour {
 					{
 						// the touch is ended so now we can calculate the time and distance
 						int temp = 0;
-						bool isCoin = false, isBomb = false, isEliminator = false;
 						try{
 							foreach (T node in selectedNodes) {
-								if(node.value == 0){
-									switch(node.myPowerUp){
-									case PowerUp.coin:
-										isCoin = true;
-										break;
-									case PowerUp.bomb:
-										isCoin = true;
-										break;
-									case PowerUp.horizontal:
-									case PowerUp.vertical:
-										isEliminator = true;
-										break;
-									}
-								}
-								else
-									temp += node.value;
+								temp += node.value;
 								node.HideQuad();
 							}
 						}
