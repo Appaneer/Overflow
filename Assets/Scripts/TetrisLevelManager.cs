@@ -20,6 +20,7 @@ public class TetrisLevelManager : LevelManager {
 	void Start(){
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		audioSource = GetComponent<AudioSource> ();
+		SetSum (UnityEngine.Random.Range (10, 19));
 		UIManager.UpdateSumText (sum);
 		isPaused = false;
 		accumulator = timeToSpawn;
