@@ -21,6 +21,9 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void Update(){
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			UIManager.LoadLandingPage ();
+		}
 		SpawnNodes ();
 		GetInput<Node> ();
 	}

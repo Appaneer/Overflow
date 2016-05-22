@@ -9,16 +9,7 @@ using System;
 public class UIManager : MonoBehaviour {
 	//------langing scene-------
 	public Canvas gamePage;//this canvas contains everything but shop page
-	public Canvas creditPage;
-	public Canvas settingPage;
-	public Canvas shopPage;
-	public Canvas purchasedPage;
-	public Button shopButton;
-	public Button creditButton;
-	public Button settingButton;
-	public Button shareButton;
-	public Sprite soundOnSprite;
-	public Sprite soundOffSprite;
+	public Text highScore;
 	public GameObject Border;
 	public Text randomText;
 	public Text coinText;
@@ -29,19 +20,16 @@ public class UIManager : MonoBehaviour {
 	public Text scoreText2;
 	public Text highScoreText;
 	public Text coinText2;
-	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
 	public Animator displaySumAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
-	private const string FACEBOOK_APP_ID = "794667970397816";
-	public string gameId;
-	public bool enableTestMode;
 	private static UIManager instance;
 
 	void Start(){
 		instance = this;
+		if (highScore != null)
+			highScore.text = "HIGH SCORE:\n" + PlayerPrefs.GetInt ("HighScore");
 	}
 
 	public static void TriggerDisplaySumText(int sum){
@@ -63,7 +51,7 @@ public class UIManager : MonoBehaviour {
 		SceneManager.LoadScene ("Space Level");
 	}
 		
-	public void LoadLandingPage(){
+	public static void LoadLandingPage(){
 		SceneManager.LoadScene ("Landing Page");
 	}
 
