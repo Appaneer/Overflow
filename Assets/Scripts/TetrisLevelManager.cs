@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TetrisLevelManager : LevelManager {
 
@@ -28,7 +29,7 @@ public class TetrisLevelManager : LevelManager {
 
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			UIManager.LoadLandingPage ();
+			SceneManager.LoadScene ("Landing Page");
 		}
 		SpawnNodes ();
 		GetInput<Node> ();

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class SpaceLevelManager : LevelManager {
 
@@ -22,7 +23,7 @@ public class SpaceLevelManager : LevelManager {
 
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			UIManager.LoadLandingPage ();
+			SceneManager.LoadScene ("Landing Page");
 		}
 		SpawnNodes ();
 		GetInput<Node> ();

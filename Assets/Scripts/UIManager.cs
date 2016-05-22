@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour {
 	public Animator displaySumAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-	private static UIManager instance;
+	public static UIManager instance;
 
 	void Start(){
 		instance = this;
@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour {
 		SceneManager.LoadScene ("Space Level");
 	}
 		
-	public static void LoadLandingPage(){
+	public void LoadLandingPage(){
 		SceneManager.LoadScene ("Landing Page");
 	}
 
@@ -80,6 +80,11 @@ public class UIManager : MonoBehaviour {
 
 	public static void TogglePause(){
 		LevelManager.isPaused = true;
+	}
+
+	public void Pause(){
+		LevelManager.isPaused = !LevelManager.isPaused;
+		Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
 	}
 
 	public static void ShowEndGamePage(){
