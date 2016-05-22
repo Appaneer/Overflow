@@ -11,10 +11,6 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject horizontal;
 	public GameObject vertical;
 
-	/// <summary>
-	/// The number of nodes in columns.
-	/// [0] indicates the # of nodes in the first column.
-	/// </summary>
 	public static int[] numberOfNodesInCol;
 
 	void Start(){

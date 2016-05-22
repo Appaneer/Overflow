@@ -22,11 +22,14 @@ public abstract class LevelManager : MonoBehaviour {
 	public AudioClip popSFX;
 	protected AudioSource audioSource;
 
+	private int currentSum = 0;
+
 	public static void SetSum(int s){
 		sum = s;
 	}
 
 	protected void GetInput<T>() where T : Node{
+
 		RaycastHit hit;
 		if (Input.touchCount == 1 && !isPaused) {
 			foreach (Touch touch in Input.touches) {
@@ -35,15 +38,15 @@ public abstract class LevelManager : MonoBehaviour {
 					tempNode.DisplayQuad ();
 					selectedNodes.Add (tempNode);
 				}
-
+				currentSum = GetCurrentSum ();
+				UIManager.UpdateCurrentSum (currentSum);
 				switch (touch.phase) {
 				case TouchPhase.Ended:
 					{
+						UIManager.DisableSumText ();
 						// the touch is ended so now we can calculate the time and distance
-						int temp = 0;
 						try{
 							foreach (T node in selectedNodes) {
-								temp += node.value;
 								node.HideQuad();
 							}
 						}
@@ -52,7 +55,7 @@ public abstract class LevelManager : MonoBehaviour {
 							selectedNodes.Clear ();
 						}
 
-						if (temp == sum) {
+						if (currentSum == sum) {
 							audioSource.PlayOneShot (popSFX);
 							score += selectedNodes.Count;
 							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
@@ -61,9 +64,9 @@ public abstract class LevelManager : MonoBehaviour {
 								node.Destroy ();
 							}
 						} else {
-							UIManager.TriggerDisplaySumText (temp);
+							UIManager.TriggerDisplaySumText (currentSum);
 						}
-						temp = 0;
+						currentSum = 0;
 						selectedNodes = new HashSet<Node> ();
 						break;
 					}
@@ -93,5 +96,13 @@ public abstract class LevelManager : MonoBehaviour {
 		for (int i = arr.Length - 1; i >= arr.Length - 1 - amount; i--) {
 			arr [i].GetComponent<Node> ().Destroy ();
 		}
+	}
+
+	public int GetCurrentSum(){
+		int sum = 0;
+		foreach (Node n in selectedNodes) {
+			sum += n.value;
+		}
+		return sum;
 	}
 }

@@ -99,5 +99,12 @@ public class UIManager : MonoBehaviour {
 		instance.endGameCanvas.enabled = true;
 	}
 
+	public static void UpdateCurrentSum(int sum){
+		instance.displaySumText.enabled = true;
+		instance.displaySumText.text = "" + sum;
+	}
 
+	public static void DisableSumText(){
+		instance.displaySumText.enabled = false;
+	}
 }
