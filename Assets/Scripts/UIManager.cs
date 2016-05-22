@@ -68,10 +68,8 @@ public class UIManager : MonoBehaviour {
 		
 	public static void updateScore(int score){
 		instance.scoreText.text = score+"";
-	}
-
-	public static void updateCoin(){
-		instance.coinText.text = PlayerPrefs.GetInt ("Coins")+"";
+		if (score > PlayerPrefs.GetInt ("HighScore"))
+			PlayerPrefs.SetInt ("HighScore", score);
 	}
 		
 	public static void UpdateSumText(int sum){
