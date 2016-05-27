@@ -22,17 +22,14 @@ public abstract class LevelManager : MonoBehaviour {
 	public AudioClip popSFX;
 	protected AudioSource audioSource;
 
-	//this is abstract class, it shouldn't have Start() or Update()
+	private int currentSum = 0;
 
-	/// <summary>
-	/// Sets the sum.
-	/// </summary>
-	/// <param name="s">Sum</param>
 	public static void SetSum(int s){
 		sum = s;
 	}
 
 	protected void GetInput<T>() where T : Node{
+
 		RaycastHit hit;
 		if (Input.touchCount == 1 && !isPaused) {
 			foreach (Touch touch in Input.touches) {
@@ -41,31 +38,15 @@ public abstract class LevelManager : MonoBehaviour {
 					tempNode.DisplayQuad ();
 					selectedNodes.Add (tempNode);
 				}
-
+				currentSum = GetCurrentSum ();
+				UIManager.UpdateCurrentSum (currentSum);
 				switch (touch.phase) {
 				case TouchPhase.Ended:
 					{
+						UIManager.DisableSumText ();
 						// the touch is ended so now we can calculate the time and distance
-						int temp = 0;
-						bool isCoin = false, isBomb = false, isEliminator = false;
 						try{
 							foreach (T node in selectedNodes) {
-								if(node.value == 0){
-									switch(node.myPowerUp){
-									case PowerUp.coin:
-										isCoin = true;
-										break;
-									case PowerUp.bomb:
-										isCoin = true;
-										break;
-									case PowerUp.horizontal:
-									case PowerUp.vertical:
-										isEliminator = true;
-										break;
-									}
-								}
-								else
-									temp += node.value;
 								node.HideQuad();
 							}
 						}
@@ -74,15 +55,8 @@ public abstract class LevelManager : MonoBehaviour {
 							selectedNodes.Clear ();
 						}
 
-						if (temp == sum) {
-							if(!isCoin && !isBomb && !isEliminator)
-								audioSource.PlayOneShot (popSFX);
-							else if(isBomb)//if this is a bomb
-								audioSource.PlayOneShot (coinSFX);
-							else if(isEliminator)//if this is a hor/vert eliminator
-								audioSource.PlayOneShot (coinSFX);
-							else//if this is a coin
-								audioSource.PlayOneShot (coinSFX);
+						if (currentSum == sum) {
+							audioSource.PlayOneShot (popSFX);
 							score += selectedNodes.Count;
 							timeToSpawn = -0.01f * score + 2f;//using an equation to model this y = -0.02x + 2(y is timeToSpawn and x is score)
 							UIManager.updateScore (score);
@@ -90,9 +64,9 @@ public abstract class LevelManager : MonoBehaviour {
 								node.Destroy ();
 							}
 						} else {
-							UIManager.TriggerDisplaySumText (temp);
+							UIManager.TriggerDisplaySumText (currentSum);
 						}
-						temp = 0;
+						currentSum = 0;
 						selectedNodes = new HashSet<Node> ();
 						break;
 					}
@@ -105,13 +79,11 @@ public abstract class LevelManager : MonoBehaviour {
 		accumulator -= Time.deltaTime;
 		if (accumulator <= 0.0f) {
 			if (!isPaused) {
-				int temp = UnityEngine.Random.Range (0, 50);
+				int temp = UnityEngine.Random.Range (0, 49);
 				if (temp < 48)
 					Instantiate (bricks [temp % 6], spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
 				else if(temp == 48)
 					Instantiate (bomb, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
-				else if(temp == 49)
-					Instantiate (coin, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
 			}				
 			accumulator = timeToSpawn;
 			if (index == spawnPoints.Length)
@@ -124,5 +96,13 @@ public abstract class LevelManager : MonoBehaviour {
 		for (int i = arr.Length - 1; i >= arr.Length - 1 - amount; i--) {
 			arr [i].GetComponent<Node> ().Destroy ();
 		}
+	}
+
+	public int GetCurrentSum(){
+		int sum = 0;
+		foreach (Node n in selectedNodes) {
+			sum += n.value;
+		}
+		return sum;
 	}
 }
