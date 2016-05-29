@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour {
 	public Text coinText2;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
+	public Animator displaySumAnim;
 	public Text targetSumText;
 	public Text displaySumText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
@@ -38,7 +39,6 @@ public class UIManager : MonoBehaviour {
 	public string gameId;
 	public bool enableTestMode;
 	private static UIManager instance;
-	public Canvas pauseCanvas;
 
 	void Start(){
 		instance = this;
@@ -58,6 +58,17 @@ public class UIManager : MonoBehaviour {
 	void Update(){
 		if (Input.GetKey (KeyCode.Escape))
 			LoadLandingPage ();
+	}
+
+	public static void TriggerDisplaySumText(int sum){
+		instance.displaySumText.text = "" + sum;
+		instance.StartCoroutine ("blahblahblah");
+	}
+
+	IEnumerator blahblahblah(){
+		instance.displaySumAnim.SetBool ("DisplaySum",true);
+		yield return new WaitForSeconds (0.3f);
+		instance.displaySumAnim.SetBool ("DisplaySum",false);
 	}
 
 	public void LoadTetrisLevel(){
@@ -104,15 +115,38 @@ public class UIManager : MonoBehaviour {
 		soundButton.image.sprite = soundButton.image.sprite.name.Equals ("sound on") ? soundOffSprite : soundOnSprite;
 	}
 
-	public static void Pause(){
+	public static void TogglePause(){
 		LevelManager.isPaused = true;
 	}
 
-	public void TogglePause(){
-		LevelManager.isPaused = !LevelManager.isPaused;
-		Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
-		Camera.main.farClipPlane = Camera.main.farClipPlane == 1000f ? 10f : 1000f; 
-		pauseCanvas.enabled = !pauseCanvas.enabled;
+	public void BuyBomb(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("NumBomb", PlayerPrefs.GetInt("NumBomb") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
+	}
+
+	public void BuyHorizontal(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("NumHor", PlayerPrefs.GetInt("NumHor") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
+	}
+
+	public void BuyVertical(int price){
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("NumVer", PlayerPrefs.GetInt("NumVer") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+			StartCoroutine ("DisplayPurchasedPage");
+		}
 	}
 		
 	public void BuyNumberPowerups(int number){
@@ -180,7 +214,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void ShowEndGamePage(){
-		Pause ();
+		TogglePause ();
 		if (LevelManager.isWatchedAds) 
 			instance.ShowGameOverPage ();
 		else
@@ -262,15 +296,6 @@ public class UIManager : MonoBehaviour {
 	/// <param name="sum">Sum.</param>
 	public static void UpdateSumText(int sum){
 		instance.targetSumText.text = "SUM: " + sum;
-	}
-
-	public static void UpdateCurrentSum(int sum){
-		instance.displaySumText.enabled = true;
-		instance.displaySumText.text = "" + sum;
-	}
-
-	public static void DisableSumText(){
-		instance.displaySumText.enabled = false;
 	}
 
 	IEnumerator DisplayPurchasedPage(){
