@@ -61,6 +61,9 @@ public class Node : MonoBehaviour {
 					}
 				}
 			}
+			else if(myPowerUp == PowerUp.coin){
+				CoinManager.Deposit (1);
+			}
 		}
 		if (col != 0) {
 			//this means the current level is tetris level but not space level

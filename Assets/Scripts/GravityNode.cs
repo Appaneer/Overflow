@@ -32,6 +32,9 @@ public class GravityNode : Node {
 					}
 				}
 			}
+			else if(myPowerUp == PowerUp.coin){
+				CoinManager.Deposit (1);
+			}
 		}
 		
 	}

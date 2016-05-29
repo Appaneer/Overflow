@@ -16,6 +16,6 @@ public class LandingPageAnimation : MonoBehaviour {
 		if (accumulator <= 0.0f) {
 			Instantiate (brick, new Vector3(Random.Range(-2.5f,2.5f),Random.Range(5.5f,6f),-1f), Quaternion.identity);
 			accumulator = timeToSpawn;
-		}
 	}
+				}
 }
