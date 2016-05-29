@@ -209,7 +209,7 @@ public class UIManager : MonoBehaviour {
 	}
 		
 	IEnumerator DeleteNodes(){
-		LevelManager.DeleteNodes (8);
+		LevelManager.DeleteNodes (4);
 		yield return new WaitForSeconds (0.75f);
 		LevelManager.isPaused = false;
 		LevelManager.isWatchedAds = true;
