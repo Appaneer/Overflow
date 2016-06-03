@@ -12,7 +12,6 @@ public class UIManager : MonoBehaviour {
 	public Canvas creditPage;
 	public Canvas settingPage;
 	public Canvas shopPage;
-	public Canvas purchasedPage;
 	public Button shopButton;
 	public Button creditButton;
 	public Button settingButton;
@@ -22,6 +21,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject Border;
 	public Text randomText;
 	public Text coinText;
+	public Animator playButtonAnim;
 	//-------tetris/space scene------
 	public Canvas endGameCanvas;
 	public Button videoButton;
@@ -58,6 +58,10 @@ public class UIManager : MonoBehaviour {
 	void Update(){
 		if (Input.GetKey (KeyCode.Escape))
 			LoadLandingPage ();
+	}
+
+	public void Play(){
+		playButtonAnim.SetTrigger ("Play");
 	}
 
 	public void LoadTetrisLevel(){
@@ -122,7 +126,6 @@ public class UIManager : MonoBehaviour {
 			PlayerPrefs.SetInt("Num"+number, PlayerPrefs.GetInt("Num"+number) + 1);
 			CoinManager.Withdraw (price);
 			updateCoin ();
-			StartCoroutine ("DisplayPurchasedPage");
 		}
 	}
 
@@ -271,12 +274,6 @@ public class UIManager : MonoBehaviour {
 
 	public static void DisableSumText(){
 		instance.displaySumText.enabled = false;
-	}
-
-	IEnumerator DisplayPurchasedPage(){
-		purchasedPage.enabled = true;
-		yield return new WaitForSeconds (0.75f);
-		purchasedPage.enabled = false;
 	}
 
 	/// <summary>
