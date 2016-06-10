@@ -78,7 +78,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void Reset(){
-		PlayerPrefs.SetInt ("Coins", 0);
+		PlayerPrefs.SetInt ("Coins", 100);
 	}
 
 	public void ToggleCreditPage(){
@@ -98,8 +98,6 @@ public class UIManager : MonoBehaviour {
 	public void ToggleShopPage(){
 		gamePage.enabled = gamePage.enabled ? false : true;
 		shopPage.enabled = shopPage.enabled ? false : true;
-		MeshRenderer quad = Border.GetComponent<MeshRenderer> ();
-		quad.enabled=quad.enabled ?false: true;
 
 		updateCoin ();
 	}
@@ -124,6 +122,28 @@ public class UIManager : MonoBehaviour {
 		pauseCanvas.enabled = !pauseCanvas.enabled;
 	}
 		
+	public void UseFreezePowerup(){
+		StartCoroutine ("Freeze");
+		PlayerPrefs.SetInt ("Freeze", PlayerPrefs.GetInt("Freeze") - 1);
+		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
+	}
+
+	IEnumerator Freeze(){
+		LevelManager.isPaused = true;
+		yield return new WaitForSeconds (7.0f);
+		LevelManager.isPaused = false;
+	}
+
+	public void BuyFreezePowerup(){
+		int price = 1;
+		if(PlayerPrefs.GetInt("Coins") >= price){
+			//buy stuff
+			PlayerPrefs.SetInt("Freeze", PlayerPrefs.GetInt("Freeze") + 1);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+		}
+	}
+
 	public void BuyNumberPowerups(int number){
 		int price = 1;
 		if(PlayerPrefs.GetInt("Coins") >= price && number >= 1 && number <= 6){

@@ -29,6 +29,7 @@ public class TetrisLevelManager : LevelManager {
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
+		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
 		accumulator = timeToSpawn;
 		selectedNodes = new HashSet<Node> ();
 		score = 0;
