@@ -21,7 +21,7 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void Update(){
-		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0)
+		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0 &&  UIManager.instance.tutorialCanvas!=null)
 			StartCoroutine ("wait");
 		SpawnNodes ();
 		GetInput<Node> ();
