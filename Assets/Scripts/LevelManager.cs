@@ -24,6 +24,7 @@ public abstract class LevelManager : MonoBehaviour {
 
 	private int currentSum = 0;
 
+	protected bool isShowedTutorial = false;//was the tutorial page showed?
 	//this is abstract class, it shouldn't have Start() or Update()
 
 	/// <summary>
@@ -68,7 +69,9 @@ public abstract class LevelManager : MonoBehaviour {
 						if (currentSum == sum) {
 							audioSource.PlayOneShot (popSFX);
 							score += selectedNodes.Count;
-							timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
+							if(score < 70){
+								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
+							}
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();

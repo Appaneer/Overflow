@@ -37,8 +37,9 @@ public class UIManager : MonoBehaviour {
 	private const string FACEBOOK_APP_ID = "794667970397816";
 	public string gameId;
 	public bool enableTestMode;
-	private static UIManager instance;
+	public static UIManager instance;
 	public Canvas pauseCanvas;
+	public Canvas tutorialCanvas;
 
 	void Start(){
 		instance = this;
@@ -74,6 +75,10 @@ public class UIManager : MonoBehaviour {
 
 	public void LoadLandingPage(){
 		SceneManager.LoadScene ("Landing Page");
+	}
+
+	public void Reset(){
+		PlayerPrefs.SetInt ("Coins", 0);
 	}
 
 	public void ToggleCreditPage(){

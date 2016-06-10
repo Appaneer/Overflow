@@ -38,8 +38,17 @@ public class TetrisLevelManager : LevelManager {
 	}
 
 	void Update(){
+		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0)
+			StartCoroutine ("wait");
 		SpawnNodes ();
 		GetInput<Node> ();
+	}
+
+	IEnumerator wait(){
+		UIManager.instance.tutorialCanvas.enabled = true;
+		yield return new WaitForSeconds (3.0f);
+		isShowedTutorial = true;
+		UIManager.instance.tutorialCanvas.enabled = false;
 	}
 
 	void InitMap(){
