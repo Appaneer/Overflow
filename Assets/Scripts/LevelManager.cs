@@ -18,8 +18,10 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 
+	public static bool isAudioOn = true;
 	public AudioClip coinSFX;
 	public AudioClip popSFX;
+	public AudioClip clickSFX;
 	protected AudioSource audioSource;
 
 	private int currentSum = 0;
@@ -43,7 +45,8 @@ public abstract class LevelManager : MonoBehaviour {
 					T tempNode = hit.transform.gameObject.GetComponent<T> ();
 					try{
 						tempNode.DisplayQuad ();
-						selectedNodes.Add (tempNode);
+						if(LevelManager.isAudioOn && selectedNodes.Add (tempNode))
+							audioSource.PlayOneShot (clickSFX);
 					}
 					catch(NullReferenceException e){
 						e.ToString ();
@@ -67,7 +70,8 @@ public abstract class LevelManager : MonoBehaviour {
 						}
 
 						if (currentSum == sum) {
-							audioSource.PlayOneShot (popSFX);
+							if(isAudioOn)
+								audioSource.PlayOneShot (popSFX);
 							score += selectedNodes.Count;
 							if(score < 70){
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)

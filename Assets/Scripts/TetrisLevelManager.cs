@@ -18,12 +18,16 @@ public class TetrisLevelManager : LevelManager {
 	public static int[] numberOfNodesInCol;
 
 	void Start(){
+		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		audioSource = GetComponent<AudioSource> ();
 		if (PlayerPrefs.GetInt ("NextSum") == 0)
 			SetSum (UnityEngine.Random.Range (10, 19));
-		else
+		else {
 			SetSum (PlayerPrefs.GetInt ("NextSum"));
+			PlayerPrefs.SetInt ("NextSum", 0);
+		}
+			
 		UIManager.UpdateSumText (sum);
 		isPaused = false;
 		for(int number = 1; number <= 6; number++){

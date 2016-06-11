@@ -77,8 +77,14 @@ public class UIManager : MonoBehaviour {
 		SceneManager.LoadScene ("Landing Page");
 	}
 
-	public void Reset(){
-		PlayerPrefs.SetInt ("Coins", 100);
+	public void ToggleTutorialPage(){
+		StartCoroutine ("Wait");
+	}
+
+	IEnumerator Wait(){
+		tutorialCanvas.enabled = true;
+		yield return new WaitForSeconds (2.5f);
+		tutorialCanvas.enabled = false;
 	}
 
 	public void ToggleCreditPage(){
@@ -109,6 +115,7 @@ public class UIManager : MonoBehaviour {
 
 	public void ToggleSound(Button soundButton){
 		soundButton.image.sprite = soundButton.image.sprite.name.Equals ("sound on") ? soundOffSprite : soundOnSprite;
+		LevelManager.isAudioOn = !LevelManager.isAudioOn;
 	}
 
 	public static void Pause(){
@@ -129,9 +136,9 @@ public class UIManager : MonoBehaviour {
 	}
 
 	IEnumerator Freeze(){
-		LevelManager.isPaused = true;
-		yield return new WaitForSeconds (7.0f);
-		LevelManager.isPaused = false;
+		Time.timeScale = 0.2f;
+		yield return new WaitForSeconds (2f);
+		Time.timeScale = 1;
 	}
 
 	public void BuyFreezePowerup(){
