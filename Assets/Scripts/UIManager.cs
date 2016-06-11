@@ -188,10 +188,14 @@ public class UIManager : MonoBehaviour {
 
 	public static void ShowEndGamePage(){
 		Pause ();
-		if (LevelManager.isWatchedAds) 
+		if (LevelManager.isWatchedAds)
 			instance.ShowGameOverPage ();
-		else
+		else {
+			if(instance.endGameCanvas.enabled == false)
+				CoinManager.Deposit (LevelManager.score / 10);
 			instance.endGameCanvas.enabled = true;
+		}
+			
 	}
 
 	public void ShowGameOverPage(){
@@ -203,7 +207,7 @@ public class UIManager : MonoBehaviour {
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
 		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
 		coinEarnedInGameText.text = "+" + (LevelManager.score / 10);
-		CoinManager.Deposit (LevelManager.score / 10);
+
 		PlayerPrefs.SetInt ("NextSum", 0);
 		coinEarnedAnim.SetTrigger ("GameOver");
 	}
