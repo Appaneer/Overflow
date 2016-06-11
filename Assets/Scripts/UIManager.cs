@@ -29,8 +29,10 @@ public class UIManager : MonoBehaviour {
 	public Text scoreText2;
 	public Text highScoreText;
 	public Text coinText2;
+	public Text coinEarnedInGameText;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
+	public Animator coinEarnedAnim;
 	public Text targetSumText;
 	public Text displaySumText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
@@ -142,7 +144,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void BuyFreezePowerup(){
-		int price = 1;
+		int price = 20;
 		if(PlayerPrefs.GetInt("Coins") >= price){
 			//buy stuff
 			PlayerPrefs.SetInt("Freeze", PlayerPrefs.GetInt("Freeze") + 1);
@@ -152,7 +154,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void BuyNumberPowerups(int number){
-		int price = 1;
+		int price = 20;
 		if(PlayerPrefs.GetInt("Coins") >= price && number >= 1 && number <= 6){
 			//buy stuff
 			PlayerPrefs.SetInt("Num"+number, PlayerPrefs.GetInt("Num"+number) + 1);
@@ -165,47 +167,17 @@ public class UIManager : MonoBehaviour {
 		int price = 0;
 		switch(number){
 		case 10:
-			price = 1;
+			price = 40;
 			if (PlayerPrefs.GetInt ("Coins") >= price) 
 				PlayerPrefs.SetInt ("NextSum", number);
 			break;
 		case 11:
-			price = 1;
+			price = 35;
 			if (PlayerPrefs.GetInt ("Coins") >= price) 
 				PlayerPrefs.SetInt ("NextSum", number);
 			break;
 		case 12:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 13:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 14:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 15:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 16:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 17:
-			price = 1;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
-			break;
-		case 18:
-			price = 1;
+			price = 30;
 			if (PlayerPrefs.GetInt ("Coins") >= price) 
 				PlayerPrefs.SetInt ("NextSum", number);
 			break;
@@ -230,7 +202,10 @@ public class UIManager : MonoBehaviour {
 		scoreText2.text = "Score\n"+LevelManager.score;
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
 		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+		coinEarnedInGameText.text = "+" + (LevelManager.score / 10);
+		CoinManager.Deposit (LevelManager.score / 10);
 		PlayerPrefs.SetInt ("NextSum", 0);
+		coinEarnedAnim.SetTrigger ("GameOver");
 	}
 
 	public void ShowRewardedAd(bool isCoinRewarded)
@@ -258,8 +233,9 @@ public class UIManager : MonoBehaviour {
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
 			if (flag) {
-				CoinManager.Deposit (111);
+				CoinManager.Deposit (20);
 				updateCoin ();
+				coinEarnedAnim.SetTrigger ("GameOver");
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;
