@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
+		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
 		audioSource = GetComponent<AudioSource> ();
 		isPaused = false;
 		accumulator = timeToSpawn;

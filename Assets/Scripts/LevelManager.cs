@@ -18,10 +18,11 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 
-	public static bool isAudioOn = true;
+	public static bool isAudioOn;
 	public AudioClip coinSFX;
 	public AudioClip popSFX;
 	public AudioClip clickSFX;
+	AudioClip sfx;
 	protected AudioSource audioSource;
 
 	private int currentSum = 0;
@@ -45,7 +46,7 @@ public abstract class LevelManager : MonoBehaviour {
 					T tempNode = hit.transform.gameObject.GetComponent<T> ();
 					try{
 						tempNode.DisplayQuad ();
-						if(LevelManager.isAudioOn && selectedNodes.Add (tempNode))
+						if(selectedNodes.Add (tempNode) && isAudioOn)
 							audioSource.PlayOneShot (clickSFX);
 					}
 					catch(NullReferenceException e){
@@ -60,7 +61,10 @@ public abstract class LevelManager : MonoBehaviour {
 						UIManager.DisableSumText ();
 						// the touch is ended so now we can calculate the time and distance
 						try{
+							sfx = popSFX;
 							foreach (T node in selectedNodes) {
+								if(node.value == 0)
+									sfx = coinSFX;
 								node.HideQuad();
 							}
 						}
@@ -71,7 +75,7 @@ public abstract class LevelManager : MonoBehaviour {
 
 						if (currentSum == sum) {
 							if(isAudioOn)
-								audioSource.PlayOneShot (popSFX);
+								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
 							if(score < 70){
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)

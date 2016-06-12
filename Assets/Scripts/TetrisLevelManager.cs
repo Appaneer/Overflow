@@ -18,6 +18,7 @@ public class TetrisLevelManager : LevelManager {
 	public static int[] numberOfNodesInCol;
 
 	void Start(){
+		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
 		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		audioSource = GetComponent<AudioSource> ();

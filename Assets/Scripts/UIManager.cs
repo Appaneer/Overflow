@@ -12,10 +12,12 @@ public class UIManager : MonoBehaviour {
 	public Canvas creditPage;
 	public Canvas settingPage;
 	public Canvas shopPage;
+	public Canvas purchasedPage;
 	public Button shopButton;
 	public Button creditButton;
 	public Button settingButton;
 	public Button shareButton;
+	public Button soundButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
 	public GameObject Border;
@@ -44,6 +46,10 @@ public class UIManager : MonoBehaviour {
 	public Canvas tutorialCanvas;
 
 	void Start(){
+		if (PlayerPrefs.GetInt ("isAudioOn") == 0)
+			soundButton.image.sprite = soundOnSprite;
+		else
+			soundButton.image.sprite = soundOffSprite;
 		instance = this;
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
@@ -117,7 +123,14 @@ public class UIManager : MonoBehaviour {
 
 	public void ToggleSound(Button soundButton){
 		soundButton.image.sprite = soundButton.image.sprite.name.Equals ("sound on") ? soundOffSprite : soundOnSprite;
-		LevelManager.isAudioOn = !LevelManager.isAudioOn;
+		if (PlayerPrefs.GetInt ("isAudioOn") == 0) {
+			PlayerPrefs.SetInt ("isAudioOn", 1);//1 = audio is on
+			LevelManager.isAudioOn = false;
+		}
+		else{
+			PlayerPrefs.SetInt ("isAudioOn", 0);//0 = audio is off
+			LevelManager.isAudioOn = true;
+		}
 	}
 
 	public static void Pause(){
@@ -131,6 +144,10 @@ public class UIManager : MonoBehaviour {
 		pauseCanvas.enabled = !pauseCanvas.enabled;
 	}
 		
+	public void TogglePurchasedPage(){
+		purchasedPage.enabled = !purchasedPage.enabled;
+	}
+
 	public void UseFreezePowerup(){
 		StartCoroutine ("Freeze");
 		PlayerPrefs.SetInt ("Freeze", PlayerPrefs.GetInt("Freeze") - 1);
@@ -147,6 +164,7 @@ public class UIManager : MonoBehaviour {
 		int price = 20;
 		if(PlayerPrefs.GetInt("Coins") >= price){
 			//buy stuff
+			TogglePurchasedPage();
 			PlayerPrefs.SetInt("Freeze", PlayerPrefs.GetInt("Freeze") + 1);
 			CoinManager.Withdraw (price);
 			updateCoin ();
@@ -157,6 +175,7 @@ public class UIManager : MonoBehaviour {
 		int price = 20;
 		if(PlayerPrefs.GetInt("Coins") >= price && number >= 1 && number <= 6){
 			//buy stuff
+			TogglePurchasedPage();
 			PlayerPrefs.SetInt("Num"+number, PlayerPrefs.GetInt("Num"+number) + 1);
 			CoinManager.Withdraw (price);
 			updateCoin ();
@@ -168,22 +187,20 @@ public class UIManager : MonoBehaviour {
 		switch(number){
 		case 10:
 			price = 40;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
 			break;
 		case 11:
 			price = 35;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
 			break;
 		case 12:
 			price = 30;
-			if (PlayerPrefs.GetInt ("Coins") >= price) 
-				PlayerPrefs.SetInt ("NextSum", number);
 			break;
 		}
-		CoinManager.Withdraw (price);
-		updateCoin ();
+		if (PlayerPrefs.GetInt ("Coins") >= price) {
+			TogglePurchasedPage();
+			PlayerPrefs.SetInt ("NextSum", number);
+			CoinManager.Withdraw (price);
+			updateCoin ();
+		}
 	}
 
 	public static void ShowEndGamePage(){
