@@ -31,6 +31,9 @@ public abstract class LevelManager : MonoBehaviour {
 	protected bool isShowedTutorial = false;//was the tutorial page showed?
 	//this is abstract class, it shouldn't have Start() or Update()
 
+	Vector3 originalCameraPosition = new Vector3(0, 0.15f, -10f);
+	public float shakeAmount = 0;
+
 	/// <summary>
 	/// Sets the sum.
 	/// </summary>
@@ -79,11 +82,18 @@ public abstract class LevelManager : MonoBehaviour {
 						}
 
 						if (currentSum == sum) {
+							if (sfx.Equals (bombSFX)) {
+								InvokeRepeating("CameraShake", 0, .01f);
+								Invoke("StopShaking", 0.3f);
+							}
 							if(isAudioOn)
 								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
-							if(score < 72){
+							if (score < 72) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
+							}
+							else if (score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 15) {
+								StartCoroutine ("juice1");
 							}
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
@@ -97,6 +107,20 @@ public abstract class LevelManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	IEnumerator juice1(){
+		isPaused = true;
+		yield return new WaitForSeconds (2.0f);
+		for(int i = 0; i < 6; i++){
+			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
+		}
+		yield return new WaitForSeconds (2.0f);
+		for(int i = 0; i < 6; i++){
+			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
+		}
+		yield return new WaitForSeconds (2.0f);
+		isPaused = false;
 	}
 
 	public virtual void SpawnNodes (){
@@ -130,5 +154,21 @@ public abstract class LevelManager : MonoBehaviour {
 			sum += n.value;
 		}
 		return sum;
+	}
+
+	protected void CameraShake()
+	{
+		if(shakeAmount > 0) 
+		{
+			Vector3 temp = UnityEngine.Random.insideUnitSphere * shakeAmount;
+			temp.z = -10f;
+			Camera.main.transform.position = temp;
+		}
+	}
+
+	protected void StopShaking()
+	{
+		CancelInvoke("CameraShake");
+		Camera.main.transform.position = originalCameraPosition;
 	}
 }
