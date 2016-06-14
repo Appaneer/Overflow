@@ -34,25 +34,7 @@ public class Node : MonoBehaviour {
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
-			if (myPowerUp == PowerUp.horizontal) {
-				for(int i = 0; i < arr.Length && temp < 5; i++){
-					if(Mathf.Abs(transform.position.y - arr[i].transform.position.y) <= 0.2f && transform.position - arr[i].transform.position != Vector3.zero
-						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.horizontal){
-						arr [i].GetComponent<Node> ().Destroy ();
-						temp++;
-					}
-				}
-			}
-			else if (myPowerUp == PowerUp.vertical) {
-				for(int i = 0; i < arr.Length && temp < 5; i++){
-					if(Mathf.Abs(transform.position.x - arr[i].transform.position.x) <= 0.2f && transform.position - arr[i].transform.position != Vector3.zero
-						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.vertical){
-						arr [i].GetComponent<Node> ().Destroy ();
-						temp++;
-					}
-				}
-			}
-			else if(myPowerUp == PowerUp.bomb){
+			if(myPowerUp == PowerUp.bomb){
 				for(int i = 0; i < arr.Length && temp < 8; i++){
 					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.5f && transform.position - arr[i].transform.position != Vector3.zero
 						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.bomb){//root 2 + some tolerance
@@ -95,8 +77,6 @@ public class Node : MonoBehaviour {
 	
 public enum PowerUp
 {
-	horizontal,
-	vertical,
 	bomb,
 	coin
 };

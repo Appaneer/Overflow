@@ -36,8 +36,8 @@ public class SpaceLevelManager : LevelManager {
 	}
 
 	void InitMap(){
-		for(float r = 1.5f; r >= -1.5f; r--){
-			for(float c = 1.5f; c >= -1.5f; c--){
+		for(float r = 2f; r >= -2f; r--){
+			for(float c = 2f; c >= -2f; c--){
 				Instantiate (bricks[Random.Range (1,bricks.Length)], new Vector2 (r, c), Quaternion.Euler(0, 180, 0));
 			}
 		}

@@ -149,9 +149,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void UseFreezePowerup(){
-		StartCoroutine ("Freeze");
-		PlayerPrefs.SetInt ("Freeze", PlayerPrefs.GetInt("Freeze") - 1);
-		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
+		if (PlayerPrefs.GetInt ("Freeze") > 0) {
+			StartCoroutine ("Freeze");
+			PlayerPrefs.SetInt ("Freeze", PlayerPrefs.GetInt("Freeze") - 1);
+			UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
+		}
 	}
 
 	IEnumerator Freeze(){

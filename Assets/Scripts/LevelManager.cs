@@ -20,6 +20,7 @@ public abstract class LevelManager : MonoBehaviour {
 
 	public static bool isAudioOn;
 	public AudioClip coinSFX;
+	public AudioClip bombSFX;
 	public AudioClip popSFX;
 	public AudioClip clickSFX;
 	AudioClip sfx;
@@ -63,8 +64,12 @@ public abstract class LevelManager : MonoBehaviour {
 						try{
 							sfx = popSFX;
 							foreach (T node in selectedNodes) {
-								if(node.value == 0)
-									sfx = coinSFX;
+								if(node.value == 0){
+									if(node.myPowerUp == PowerUp.coin)
+										sfx = coinSFX;
+									else if(node.myPowerUp == PowerUp.bomb)
+										sfx = bombSFX;
+								}
 								node.HideQuad();
 							}
 						}
@@ -77,7 +82,7 @@ public abstract class LevelManager : MonoBehaviour {
 							if(isAudioOn)
 								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
-							if(score < 70){
+							if(score < 72){
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							UIManager.updateScore (score);
