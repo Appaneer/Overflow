@@ -28,13 +28,8 @@ public class TetrisLevelManager : LevelManager {
 			SetSum (PlayerPrefs.GetInt ("NextSum"));
 			PlayerPrefs.SetInt ("NextSum", 0);
 		}
-			
 		UIManager.UpdateSumText (sum);
 		isPaused = false;
-		for(int number = 1; number <= 6; number++){
-			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
-		}
-		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
 		accumulator = timeToSpawn;
 		selectedNodes = new HashSet<Node> ();
 		score = 0;

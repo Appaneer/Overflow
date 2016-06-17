@@ -46,6 +46,10 @@ public class UIManager : MonoBehaviour {
 	public Canvas tutorialCanvas;
 
 	void Start(){
+		for(int number = 1; number <= 6; number++){
+			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
+		}
+		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
 		if (PlayerPrefs.GetInt ("isAudioOn") == 0)
 			soundButton.image.sprite = soundOnSprite;
 		else
@@ -171,6 +175,7 @@ public class UIManager : MonoBehaviour {
 			CoinManager.Withdraw (price);
 			updateCoin ();
 		}
+		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
 	}
 
 	public void BuyNumberPowerups(int number){
@@ -182,6 +187,7 @@ public class UIManager : MonoBehaviour {
 			CoinManager.Withdraw (price);
 			updateCoin ();
 		}
+		UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 	}
 
 	public void BuySum(int number){

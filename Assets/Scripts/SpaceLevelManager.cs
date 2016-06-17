@@ -6,10 +6,6 @@ using UnityEngine.UI;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
-		for(int number = 1; number <= 6; number++){
-			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
-		}
-		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
 		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
 		audioSource = GetComponent<AudioSource> ();
 		isPaused = false;
