@@ -36,7 +36,7 @@ public class Node : MonoBehaviour {
 			int temp = 0;
 			if(myPowerUp == PowerUp.bomb){
 				for(int i = 0; i < arr.Length && temp < 8; i++){
-					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.5f && transform.position - arr[i].transform.position != Vector3.zero
+					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.8f && transform.position - arr[i].transform.position != Vector3.zero
 						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.bomb){//root 2 + some tolerance
 						arr [i].GetComponent<Node> ().Destroy ();
 						temp++;

@@ -120,6 +120,10 @@ public abstract class LevelManager : MonoBehaviour {
 			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
 		}
 		yield return new WaitForSeconds (2.0f);
+		for(int i = 0; i < 6; i++){
+			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
+		}
+		yield return new WaitForSeconds (2.0f);
 		isPaused = false;
 	}
 

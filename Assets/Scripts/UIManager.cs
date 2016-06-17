@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour {
 	public Text targetSumText;
 	public Text displaySumText;
 	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
-	private const string FACEBOOK_APP_ID = "794667970397816";
+	private const string FACEBOOK_APP_ID = "1182354041784013";
 	public string gameId;
 	public bool enableTestMode;
 	public static UIManager instance;
@@ -332,7 +332,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void FacebookShare(){
-		
+		ShareToFacebook ("http://www.google.com/", "name", "caption", "description", "http://lmsotfy.com/so.png", "http://www.facebook.com/");
 	}
 
 	/// <summary>
