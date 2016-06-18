@@ -11,6 +11,8 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject horizontal;
 	public GameObject vertical;
 
+	public bool tempBool = false;
+
 	/// <summary>
 	/// The number of nodes in columns.
 	/// [0] indicates the # of nodes in the first column.
@@ -39,8 +41,11 @@ public class TetrisLevelManager : LevelManager {
 	}
 
 	void Update(){
-		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0)
+		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
 			StartCoroutine ("wait");
+		}
+
+
 		SpawnNodes ();
 		GetInput<Node> ();
 	}
@@ -71,6 +76,12 @@ public class TetrisLevelManager : LevelManager {
 					if (numberOfNodesInCol [i] < min) {
 						index = i;
 						min = numberOfNodesInCol [i];
+					}
+					else if (numberOfNodesInCol [i] == min) {
+						if (Random.Range (0, 3) == 0) {
+							index = i;
+							min = numberOfNodesInCol [i];
+						}
 					}
 				}
 				int temp = UnityEngine.Random.Range (0, 50);

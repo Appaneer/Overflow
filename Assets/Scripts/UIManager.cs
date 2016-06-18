@@ -98,19 +98,53 @@ public class UIManager : MonoBehaviour {
 		yield return new WaitForSeconds (2.5f);
 		tutorialCanvas.enabled = false;
 	}
+	 
+	public bool isOnCreditPage = false;
 
 	public void ToggleCreditPage(){
-		ToggleButton ();
-		creditPage.enabled =  creditPage.enabled ? false : true;
-		settingButton.enabled = settingButton.enabled ? false : true;
-		shareButton.enabled = shareButton.enabled ? false : true;
+	//	ToggleButton ();
+		isOnSettingPage = false;
+		isOnCreditPage = !isOnCreditPage;
+
+		if (isOnCreditPage == false) {
+			settingPage.enabled = false;
+			creditPage.enabled = false;
+			shopButton.enabled = true;
+			shopButton.image.enabled = true;
+		}
+
+		else if(isOnCreditPage == true) {
+			settingPage.enabled = false;
+			creditPage.enabled = true;
+			shopButton.enabled = false;
+			shopButton.image.enabled = false;
+		}
+	//	settingButton.enabled = settingButton.enabled ? false : true;
+	//	shareButton.enabled = shareButton.enabled ? false : true;
 	}
 
+	public bool isOnSettingPage = false;
+
 	public void ToggleSettingPage(){
-		ToggleButton ();
-		settingPage.enabled = settingPage.enabled ? false : true;
-		creditButton.enabled = creditButton.enabled ? false : true;
-		shareButton.enabled = shareButton.enabled ? false : true;
+	//	ToggleButton ();
+		isOnSettingPage = !isOnSettingPage;
+		isOnCreditPage = false;
+		if (isOnSettingPage == false) {
+			settingPage.enabled = false;
+			creditPage.enabled = false;
+			shopButton.enabled = true;
+			shopButton.image.enabled = true;
+		}
+
+		else if(isOnSettingPage == true) {
+			settingPage.enabled = true;
+			creditPage.enabled = false;
+			shopButton.enabled = false;
+			shopButton.image.enabled = false;
+		}
+
+	//	creditButton.enabled = creditButton.enabled ? false : true;
+	//	shareButton.enabled = shareButton.enabled ? false : true;
 	}
 
 	public void ToggleShopPage(){
@@ -148,6 +182,12 @@ public class UIManager : MonoBehaviour {
 		pauseCanvas.enabled = !pauseCanvas.enabled;
 	}
 		
+	public void ReturnHome(){
+		LevelManager.isPaused = !LevelManager.isPaused;
+		Time.timeScale = 1;
+		LoadLandingPage ();
+	}
+
 	public void TogglePurchasedPage(){
 		purchasedPage.enabled = !purchasedPage.enabled;
 	}
