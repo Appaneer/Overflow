@@ -11,6 +11,7 @@ public class TetrisLevelManager : LevelManager {
 	public GameObject horizontal;
 	public GameObject vertical;
 
+	public GameObject platform;
 	public bool tempBool = false;
 
 	/// <summary>
@@ -52,9 +53,11 @@ public class TetrisLevelManager : LevelManager {
 
 	IEnumerator wait(){
 		UIManager.instance.tutorialCanvas.enabled = true;
+		platform.GetComponent<Renderer>().enabled = false;
 		yield return new WaitForSeconds (3.0f);
 		isShowedTutorial = true;
 		UIManager.instance.tutorialCanvas.enabled = false;
+		platform.GetComponent<Renderer>().enabled = true;
 	}
 
 	void InitMap(){
