@@ -400,7 +400,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void FacebookShare(){
-		ShareToFacebook ("http://www.google.com/", "name", "caption", "description", "http://lmsotfy.com/so.png", "http://www.facebook.com/");
+		#if UNITY_ANDROID
+		Application.OpenURL("market://details?id=YOUR_ID");
+		#elif UNITY_IPHONE
+		Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+		#endif
 	}
 
 	/// <summary>
