@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour {
 	public Button creditButton;
 	public Button settingButton;
 	public Button shareButton;
+	public Button musicButton;
+	public Sprite musicOnSprite;
+	public Sprite musicOffSprite;
 	public Button soundButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
@@ -54,6 +57,10 @@ public class UIManager : MonoBehaviour {
 			soundButton.image.sprite = soundOnSprite;
 		else
 			soundButton.image.sprite = soundOffSprite;
+		if (PlayerPrefs.GetInt ("isMusicOn") == 0)
+			musicButton.image.sprite = musicOnSprite;
+		else
+			musicButton.image.sprite = musicOffSprite;
 		instance = this;
 		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
@@ -162,12 +169,34 @@ public class UIManager : MonoBehaviour {
 	public void ToggleSound(Button soundButton){
 		soundButton.image.sprite = soundButton.image.sprite.name.Equals ("sound on") ? soundOffSprite : soundOnSprite;
 		if (PlayerPrefs.GetInt ("isAudioOn") == 0) {
-			PlayerPrefs.SetInt ("isAudioOn", 1);//1 = audio is on
+			PlayerPrefs.SetInt ("isAudioOn", 1);
 			LevelManager.isAudioOn = false;
 		}
 		else{
-			PlayerPrefs.SetInt ("isAudioOn", 0);//0 = audio is off
+			PlayerPrefs.SetInt ("isAudioOn", 0);
 			LevelManager.isAudioOn = true;
+		}
+	}
+
+	public void ToggleMusic(Button musicButton){
+		musicButton.image.sprite = musicButton.image.sprite.name.Equals ("music-on") ? musicOffSprite : musicOnSprite;
+		if (PlayerPrefs.GetInt ("isMusicOn") == 0) {
+			PlayerPrefs.SetInt ("isMusicOn", 1);
+			try{
+				LevelManager.backgroundMusic.mute = true;
+			}
+			catch(Exception e){
+				//do nothing!!!!
+			}
+		}
+		else{
+			PlayerPrefs.SetInt ("isMusicOn", 0);
+			try{
+				LevelManager.backgroundMusic.mute = false;
+			}
+			catch(Exception e){
+				//do nothing!!!!
+			}
 		}
 	}
 
@@ -185,6 +214,7 @@ public class UIManager : MonoBehaviour {
 	public void ReturnHome(){
 		LevelManager.isPaused = !LevelManager.isPaused;
 		Time.timeScale = 1;
+		LevelManager.backgroundMusic.volume = 0.0f;
 		LoadLandingPage ();
 	}
 

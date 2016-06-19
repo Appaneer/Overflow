@@ -18,6 +18,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 
+	public static AudioSource backgroundMusic;
 	public static bool isAudioOn;
 	public AudioClip coinSFX;
 	public AudioClip bombSFX;
@@ -40,6 +41,30 @@ public abstract class LevelManager : MonoBehaviour {
 	/// <param name="s">Sum</param>
 	public static void SetSum(int s){
 		sum = s;
+	}
+
+	protected void Initialization(){
+		backgroundMusic = Camera.main.GetComponent<AudioSource> ();//background music audio source is attached to the main camera
+		if (PlayerPrefs.GetInt ("isMusicOn") == 0) {//0 = true = music is on, 1 = false = music is off
+			backgroundMusic.mute = false;
+		} else {
+			backgroundMusic.mute = true;
+		}
+		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
+		audioSource = GetComponent<AudioSource> ();
+		isPaused = false;
+		accumulator = timeToSpawn;
+		score = 0;
+		index = 0;
+		selectedNodes = new HashSet<Node> ();
+		isWatchedAds = false;
+		if (PlayerPrefs.GetInt ("NextSum") == 0)
+			SetSum (UnityEngine.Random.Range (10, 19));
+		else {
+			SetSum (PlayerPrefs.GetInt ("NextSum"));
+			PlayerPrefs.SetInt ("NextSum", 0);
+		}
+		UIManager.UpdateSumText (sum);
 	}
 
 	protected void GetInput<T>() where T : Node{
@@ -92,8 +117,14 @@ public abstract class LevelManager : MonoBehaviour {
 							if (score < 72) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
-							else if (score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 15) {
-								StartCoroutine ("juice1");
+							else if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 25) {
+								StartCoroutine ("juice1", 2);
+							}
+							else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 25) {
+								StartCoroutine ("juice1", 3);
+							}
+							else if (score >= 150 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+								StartCoroutine ("juice1", 4);
 							}
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
@@ -109,21 +140,15 @@ public abstract class LevelManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator juice1(){
+	IEnumerator juice1(int num){
 		isPaused = true;
 		yield return new WaitForSeconds (2.0f);
-		for(int i = 0; i < 6; i++){
-			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
+		for (int a = 0; a < num; a++) {
+			for(int i = 0; i < 6; i++){
+				Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
+			}
+			yield return new WaitForSeconds (2.0f);
 		}
-		yield return new WaitForSeconds (2.0f);
-		for(int i = 0; i < 6; i++){
-			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
-		}
-		yield return new WaitForSeconds (2.0f);
-		for(int i = 0; i < 6; i++){
-			Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));
-		}
-		yield return new WaitForSeconds (2.0f);
 		isPaused = false;
 	}
 

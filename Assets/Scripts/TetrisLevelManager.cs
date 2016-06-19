@@ -8,9 +8,6 @@ public class TetrisLevelManager : LevelManager {
 	public int height;
 	public int width;
 
-	public GameObject horizontal;
-	public GameObject vertical;
-
 	public GameObject platform;
 	public bool tempBool = false;
 
@@ -21,23 +18,9 @@ public class TetrisLevelManager : LevelManager {
 	public static int[] numberOfNodesInCol;
 
 	void Start(){
-		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
+		Initialization ();
 		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
-		audioSource = GetComponent<AudioSource> ();
-		if (PlayerPrefs.GetInt ("NextSum") == 0)
-			SetSum (UnityEngine.Random.Range (10, 19));
-		else {
-			SetSum (PlayerPrefs.GetInt ("NextSum"));
-			PlayerPrefs.SetInt ("NextSum", 0);
-		}
-		UIManager.UpdateSumText (sum);
-		isPaused = false;
-		accumulator = timeToSpawn;
-		selectedNodes = new HashSet<Node> ();
-		score = 0;
-		index = 0;
-		isWatchedAds = false;
 		InitMap ();
 	}
 
@@ -45,8 +28,6 @@ public class TetrisLevelManager : LevelManager {
 		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
 			StartCoroutine ("wait");
 		}
-
-
 		SpawnNodes ();
 		GetInput<Node> ();
 	}

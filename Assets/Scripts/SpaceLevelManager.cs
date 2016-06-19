@@ -6,20 +6,8 @@ using UnityEngine.UI;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
-		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
-		audioSource = GetComponent<AudioSource> ();
-		isPaused = false;
-		accumulator = timeToSpawn;
-		score = 0;
-		index = 0;
-		selectedNodes = new HashSet<Node> ();
-		isWatchedAds = false;
+		Initialization ();
 		InitMap ();
-		if (PlayerPrefs.GetInt ("NextSum") == 0)
-			SetSum (UnityEngine.Random.Range (10, 19));
-		else
-			SetSum (PlayerPrefs.GetInt ("NextSum"));
-		UIManager.UpdateSumText (sum);
 	}
 
 	void Update(){
