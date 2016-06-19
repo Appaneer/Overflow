@@ -12,6 +12,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public static int sum;
 	public HashSet<Node> selectedNodes;
 	public static bool isPaused = false;
+	public static bool isInputDisable;
 	public GameObject bomb;
 	public GameObject coin;
 	public static bool isWatchedAds;
@@ -53,6 +54,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isAudioOn = PlayerPrefs.GetInt ("isAudioOn") == 0;//0 = true = audio is on, 1 = false = audio is off
 		audioSource = GetComponent<AudioSource> ();
 		isPaused = false;
+		isInputDisable = false;
 		accumulator = timeToSpawn;
 		score = 0;
 		index = 0;
@@ -69,7 +71,7 @@ public abstract class LevelManager : MonoBehaviour {
 
 	protected void GetInput<T>() where T : Node{
 		RaycastHit hit;
-		if (Input.touchCount == 1 && !isPaused) {
+		if (Input.touchCount == 1 && !isInputDisable) {
 			foreach (Touch touch in Input.touches) {
 				if (Physics.Raycast (Camera.main.ScreenPointToRay (touch.position), out hit)) {
 					T tempNode = hit.transform.gameObject.GetComponent<T> ();
@@ -117,10 +119,10 @@ public abstract class LevelManager : MonoBehaviour {
 							if (score < 72) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
-							else if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 25) {
+							else if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 24) {
 								StartCoroutine ("juice1", 2);
 							}
-							else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 25) {
+							else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 24) {
 								StartCoroutine ("juice1", 3);
 							}
 							else if (score >= 150 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {

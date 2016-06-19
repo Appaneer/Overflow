@@ -97,13 +97,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void ToggleTutorialPage(){
-		StartCoroutine ("Wait");
-	}
-
-	IEnumerator Wait(){
-		tutorialCanvas.enabled = true;
-		yield return new WaitForSeconds (2.5f);
-		tutorialCanvas.enabled = false;
+		tutorialCanvas.enabled = !tutorialCanvas.enabled;
 	}
 	 
 	public bool isOnCreditPage = false;
@@ -202,10 +196,12 @@ public class UIManager : MonoBehaviour {
 
 	public static void Pause(){
 		LevelManager.isPaused = true;
+		LevelManager.isInputDisable = true;
 	}
 
 	public void TogglePause(){
 		LevelManager.isPaused = !LevelManager.isPaused;
+		LevelManager.isInputDisable = !LevelManager.isInputDisable;
 		Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
 		Camera.main.farClipPlane = Camera.main.farClipPlane == 1000f ? 10f : 1000f; 
 		pauseCanvas.enabled = !pauseCanvas.enabled;
@@ -213,6 +209,7 @@ public class UIManager : MonoBehaviour {
 		
 	public void ReturnHome(){
 		LevelManager.isPaused = !LevelManager.isPaused;
+		LevelManager.isInputDisable = !LevelManager.isInputDisable;
 		Time.timeScale = 1;
 		LevelManager.backgroundMusic.volume = 0.0f;
 		LoadLandingPage ();
@@ -321,6 +318,7 @@ public class UIManager : MonoBehaviour {
 		LevelManager.DeleteNodes (4);
 		yield return new WaitForSeconds (0.75f);
 		LevelManager.isPaused = false;
+		LevelManager.isInputDisable = false;
 		LevelManager.isWatchedAds = true;
 		instance.endGameCanvas.enabled = false;
 	}
