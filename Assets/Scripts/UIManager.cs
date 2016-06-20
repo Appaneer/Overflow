@@ -85,15 +85,20 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadTetrisLevel(){
-		SceneManager.LoadScene ("Tetris Level");
+		StartCoroutine ("LoadWithWait", "Tetris Level");
 	}
 
 	public void LoadSpaceLevel(){
-		SceneManager.LoadScene ("Space Level");
+		StartCoroutine ("LoadWithWait", "Space Level");
 	}
 
 	public void LoadLandingPage(){
-		SceneManager.LoadScene ("Landing Page");
+		StartCoroutine ("LoadWithWait", "Landing Page");
+	}
+
+	IEnumerator LoadWithWait(string sceneName){
+		yield return new WaitForSeconds (2f);
+		SceneManager.LoadScene (sceneName);
 	}
 
 	public void ToggleTutorialPage(){
