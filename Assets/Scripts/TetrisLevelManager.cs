@@ -9,8 +9,6 @@ public class TetrisLevelManager : LevelManager {
 	public int width;
 
 	public GameObject platform;
-	public bool tempBool = false;
-
 	/// <summary>
 	/// The number of nodes in columns.
 	/// [0] indicates the # of nodes in the first column.

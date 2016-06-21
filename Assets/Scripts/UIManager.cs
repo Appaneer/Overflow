@@ -93,6 +93,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadLandingPage(){
+		pauseCanvas.enabled = false;
 		StartCoroutine ("LoadWithWait", "Landing Page");
 	}
 
