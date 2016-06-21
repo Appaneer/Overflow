@@ -18,6 +18,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public static bool isWatchedAds;
 	public float timeToSpawn;
 	protected float accumulator;
+	bool isJuicing;
 
 	public static AudioSource backgroundMusic;
 	public static bool isAudioOn;
@@ -55,6 +56,7 @@ public abstract class LevelManager : MonoBehaviour {
 		audioSource = GetComponent<AudioSource> ();
 		isPaused = false;
 		isInputDisable = false;
+		isJuicing = false;
 		accumulator = timeToSpawn;
 		score = 0;
 		index = 0;
@@ -119,14 +121,16 @@ public abstract class LevelManager : MonoBehaviour {
 							if (score < 72) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
-							else if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
-								StartCoroutine ("juice1", 2);
-							}
-							else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
-								StartCoroutine ("juice1", 3);
-							}
-							else if (score >= 150 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
-								StartCoroutine ("juice1", 4);
+							if (!isJuicing) {
+								if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+									StartCoroutine ("juice1", 2);
+								}
+								else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+									StartCoroutine ("juice1", 3);
+								}
+								else if (score >= 150 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+									StartCoroutine ("juice1", 4);
+								}
 							}
 							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
@@ -143,6 +147,7 @@ public abstract class LevelManager : MonoBehaviour {
 	}
 
 	IEnumerator juice1(int num){
+		isJuicing = true;
 		isPaused = true;
 		yield return new WaitForSeconds (0.75f);
 		for (int a = 0; a < num; a++) {
@@ -151,6 +156,7 @@ public abstract class LevelManager : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (2.0f);
 		}
+		isJuicing = false;
 		isPaused = false;
 	}
 
