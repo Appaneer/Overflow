@@ -17,10 +17,6 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 	public int fastSwipeThresholdDistance = 100;
 	[Tooltip("How fast will page lerp to target position")]
 	public float decelerationRate = 10f;
-	[Tooltip("Button to go to the previous page (optional)")]
-	public GameObject prevButton;
-	[Tooltip("Button to go to the next page (optional)")]
-	public GameObject nextButton;
 	[Tooltip("Sprite for unselected page (optional)")]
 	public Sprite unselectedPage;
 	[Tooltip("Sprite for selected page (optional)")]
@@ -83,13 +79,6 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 		SetPage(startingPage);
 		InitPageSelection();
 		SetPageSelection(startingPage);
-
-		// prev and next buttons
-		if (nextButton)
-			nextButton.GetComponent<Button>().onClick.AddListener(() => { NextScreen(); });
-
-		if (prevButton)
-			prevButton.GetComponent<Button>().onClick.AddListener(() => { PreviousScreen(); });
 	}
 
 	//------------------------------------------------------------------------
