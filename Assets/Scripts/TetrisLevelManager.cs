@@ -20,14 +20,23 @@ public class TetrisLevelManager : LevelManager {
 		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		InitMap ();
+
+		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
+			UIManager.instance.tutorialCanvas.enabled = true;
+			platform.GetComponent<Renderer>().enabled = false;
+		}
 	}
 
 	void Update(){
-		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
-			StartCoroutine ("wait");
+
+		if (isShowedTutorial) {
+			SpawnNodes ();
+			GetInput<Node> ();
+		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
+			isShowedTutorial = true;
+			UIManager.instance.tutorialCanvas.enabled = false;
+			platform.GetComponent<Renderer>().enabled = true;
 		}
-		SpawnNodes ();
-		GetInput<Node> ();
 	}
 
 	IEnumerator wait(){

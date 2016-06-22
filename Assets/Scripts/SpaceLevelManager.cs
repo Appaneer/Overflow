@@ -8,13 +8,20 @@ public class SpaceLevelManager : LevelManager {
 	void Start(){
 		Initialization ();
 		InitMap ();
+
+		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
+			UIManager.instance.tutorialCanvas.enabled = true;
+		}
 	}
 
 	void Update(){
-		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0 &&  UIManager.instance.tutorialCanvas!=null)
-			StartCoroutine ("wait");
-		SpawnNodes ();
-		GetInput<Node> ();
+		if (isShowedTutorial) {
+			SpawnNodes ();
+			GetInput<Node> ();
+		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
+			isShowedTutorial = true;
+			UIManager.instance.tutorialCanvas.enabled = false;
+		}
 	}
 
 	IEnumerator wait(){
