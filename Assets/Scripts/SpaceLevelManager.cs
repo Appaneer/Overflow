@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class SpaceLevelManager : LevelManager {
 
 	void Start(){
+		totalNode = 36;
 		Initialization ();
 		InitMap ();
-
 		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
 			UIManager.instance.tutorialCanvas.enabled = true;
 		}
@@ -18,6 +18,8 @@ public class SpaceLevelManager : LevelManager {
 		if (isShowedTutorial) {
 			SpawnNodes ();
 			GetInput<Node> ();
+			if(totalNode >= 72)
+				UIManager.ShowEndGamePage ();
 		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
 			isShowedTutorial = true;
 			UIManager.instance.tutorialCanvas.enabled = false;

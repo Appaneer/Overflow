@@ -16,6 +16,7 @@ public class TetrisLevelManager : LevelManager {
 	public static int[] numberOfNodesInCol;
 
 	void Start(){
+		totalNode = 30;
 		Initialization ();
 		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
@@ -28,7 +29,6 @@ public class TetrisLevelManager : LevelManager {
 	}
 
 	void Update(){
-
 		if (isShowedTutorial) {
 			SpawnNodes ();
 			GetInput<Node> ();

@@ -8,6 +8,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public GameObject[] bricks;
 	public static int score;
 	public Transform[] spawnPoints;
+	public int totalNode;//total # of bricks/node inside the game
 	protected int index;
 	public static int sum;
 	public HashSet<Node> selectedNodes;
@@ -19,6 +20,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 	bool isJuicing;
+	public static bool isSpaceLevel;//true = the current level is space level, false = the current level is stack level or landing page
 
 	public static AudioSource backgroundMusic;
 	public static bool isAudioOn;
@@ -58,6 +60,8 @@ public abstract class LevelManager : MonoBehaviour {
 		isInputDisable = false;
 		isJuicing = false;
 		accumulator = timeToSpawn;
+		if (isSpaceLevel)
+			timeToSpawn = 1.2f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -118,7 +122,8 @@ public abstract class LevelManager : MonoBehaviour {
 							if(isAudioOn)
 								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
-							if (score < 72) {
+							totalNode -= selectedNodes.Count;
+							if (score < 72 && !isSpaceLevel) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							if (!isJuicing) {
@@ -171,6 +176,7 @@ public abstract class LevelManager : MonoBehaviour {
 					Instantiate (bomb, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
 				else if(temp == 49)
 					Instantiate (coin, spawnPoints [index++].position, Quaternion.Euler (0, 180, 0));
+				totalNode++;
 			}				
 			accumulator = timeToSpawn;
 			if (index == spawnPoints.Length)

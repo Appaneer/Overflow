@@ -48,6 +48,8 @@ public class UIManager : MonoBehaviour {
 	public Canvas pauseCanvas;
 	public Canvas tutorialCanvas;
 
+	public AudioClip freezeSFX;
+
 	void Start(){
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
@@ -85,14 +87,17 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadTetrisLevel(){
+		LevelManager.isSpaceLevel = false;
 		StartCoroutine ("LoadWithWait", "Tetris Level");
 	}
 
 	public void LoadSpaceLevel(){
+		LevelManager.isSpaceLevel = true;
 		StartCoroutine ("LoadWithWait", "Space Level");
 	}
 
 	public void LoadLandingPage(){
+		LevelManager.isSpaceLevel = false;
 		pauseCanvas.enabled = false;
 		StartCoroutine ("LoadWithWait", "Landing Page");
 	}
@@ -230,6 +235,7 @@ public class UIManager : MonoBehaviour {
 			StartCoroutine ("Freeze");
 			PlayerPrefs.SetInt ("Freeze", PlayerPrefs.GetInt("Freeze") - 1);
 			UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
+			GetComponent<AudioSource> ().PlayOneShot (freezeSFX);
 		}
 	}
 
