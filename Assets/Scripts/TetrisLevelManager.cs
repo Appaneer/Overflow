@@ -8,7 +8,7 @@ public class TetrisLevelManager : LevelManager {
 	public int height;
 	public int width;
 
-	public GameObject platform;
+	public static GameObject platform;
 	/// <summary>
 	/// The number of nodes in columns.
 	/// [0] indicates the # of nodes in the first column.
@@ -16,6 +16,7 @@ public class TetrisLevelManager : LevelManager {
 	public static int[] numberOfNodesInCol;
 
 	void Start(){
+		platform = GameObject.Find ("platform");
 		totalNode = 30;
 		Initialization ();
 		print (PlayerPrefs.GetInt ("NextSum"));

@@ -154,7 +154,7 @@ public abstract class LevelManager : MonoBehaviour {
 	IEnumerator juice1(int num){
 		isJuicing = true;
 		isPaused = true;
-		yield return new WaitForSeconds (0.75f);
+		yield return new WaitForSeconds (1.25f);
 		for (int a = 0; a < num; a++) {
 			for(int i = 0; i < 6; i++){
 				Instantiate (bricks [UnityEngine.Random.Range (0, 6)], spawnPoints [i].position, Quaternion.Euler (0, 180, 0));

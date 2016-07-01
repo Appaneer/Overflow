@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using System.Net;
 using System;
 
@@ -49,6 +50,8 @@ public class UIManager : MonoBehaviour {
 	public Canvas tutorialCanvas;
 
 	public AudioClip freezeSFX;
+	public AudioMixerSnapshot paused;
+	public AudioMixerSnapshot unpaused;
 
 	void Start(){
 		for(int number = 1; number <= 6; number++){
@@ -79,7 +82,7 @@ public class UIManager : MonoBehaviour {
 		
 	void Update(){
 		if (Input.GetKey (KeyCode.Escape))
-			LoadLandingPage ();
+			ReturnHome ();
 	}
 
 	public void Play(){
@@ -97,9 +100,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadLandingPage(){
-		LevelManager.isSpaceLevel = false;
 		pauseCanvas.enabled = false;
 		StartCoroutine ("LoadWithWait", "Landing Page");
+		if (!LevelManager.isSpaceLevel)
+			Destroy (TetrisLevelManager.platform);
+		LevelManager.isSpaceLevel = false; 
 	}
 
 	IEnumerator LoadWithWait(string sceneName){
@@ -216,6 +221,10 @@ public class UIManager : MonoBehaviour {
 		Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
 		Camera.main.farClipPlane = Camera.main.farClipPlane == 1000f ? 10f : 1000f; 
 		pauseCanvas.enabled = !pauseCanvas.enabled;
+		if (Time.timeScale == 0)
+			paused.TransitionTo (0.01f);
+		else
+			unpaused.TransitionTo (0.01f);
 	}
 		
 	public void ReturnHome(){
