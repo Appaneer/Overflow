@@ -36,7 +36,7 @@ public abstract class LevelManager : MonoBehaviour {
 	protected bool isShowedTutorial = false;//was the tutorial page showed?
 	//this is abstract class, it shouldn't have Start() or Update()
 
-	Vector3 originalCameraPosition = new Vector3(0, 0.15f, -10f);
+	Vector3 originalCameraPosition = new Vector3(0, 0.15f, -9f);
 	public float shakeAmount = 0;
 
 	/// <summary>
@@ -204,7 +204,7 @@ public abstract class LevelManager : MonoBehaviour {
 		if(shakeAmount > 0) 
 		{
 			Vector3 temp = UnityEngine.Random.insideUnitSphere * shakeAmount;
-			temp.z = -10f;
+			temp.z = -9f;
 			Camera.main.transform.position = temp;
 		}
 	}
