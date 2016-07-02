@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿	using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
@@ -24,8 +24,6 @@ public class UIManager : MonoBehaviour {
 	public Button soundButton;
 	public Sprite soundOnSprite;
 	public Sprite soundOffSprite;
-	public GameObject Border;
-	public Text randomText;
 	public Text coinText;
 	public Animator playButtonAnim;
 	//-------tetris/space scene------
@@ -34,7 +32,6 @@ public class UIManager : MonoBehaviour {
 	public Text scoreText;
 	public Text scoreText2;
 	public Text highScoreText;
-	public Text coinText2;
 	public Text coinEarnedInGameText;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
@@ -54,6 +51,7 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
+		unpaused.TransitionTo (0.01f);
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
@@ -318,11 +316,10 @@ public class UIManager : MonoBehaviour {
 		gameOverAnim.SetTrigger ("GameOver");
 		scoreText2.text = "Score\n"+LevelManager.score;
 		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
-		coinText2.text = ""+PlayerPrefs.GetInt ("Coins");
+		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
 		coinEarnedInGameText.text = "+" + (LevelManager.score / 10);
-
 		PlayerPrefs.SetInt ("NextSum", 0);
-		coinEarnedAnim.SetTrigger ("GameOver");
+		coinEarnedAnim.Play ("coinEarned");
 	}
 
 	public void ShowRewardedAd(bool isCoinRewarded)
@@ -353,7 +350,8 @@ public class UIManager : MonoBehaviour {
 			if (flag) {
 				CoinManager.Deposit (20);
 				updateCoin ();
-				coinEarnedAnim.SetTrigger ("GameOver");
+				coinEarnedInGameText.text = "+20";
+				coinEarnedAnim.Play ("coinEarned 0");
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;
@@ -420,7 +418,7 @@ public class UIManager : MonoBehaviour {
 		#endif
 	}
 
-	public void FacebookShare(){
+	public void RateApp(){
 		#if UNITY_ANDROID
 		Application.OpenURL("market://details?id=YOUR_ID");
 		#elif UNITY_IPHONE
@@ -428,23 +426,7 @@ public class UIManager : MonoBehaviour {
 		#endif
 	}
 
-	/// <summary>
-	/// Shares to facebook.
-	/// </summary>
-	/// <param name="linkParameter">Link.</param>
-	/// <param name="nameParameter">Name.</param>
-	/// <param name="captionParameter">Caption.</param>
-	/// <param name="descriptionParameter">Description.</param>
-	/// <param name="pictureParameter">Picture.</param>
-	/// <param name="redirectParameter">Redirect.</param>
-	void ShareToFacebook (string linkParameter, string nameParameter, string captionParameter, string descriptionParameter, string pictureParameter, string redirectParameter)
-	{
-		Application.OpenURL (FACEBOOK_URL + "?app_id=" + FACEBOOK_APP_ID +
-			"&link=" + WWW.EscapeURL(linkParameter) +
-			"&name=" + WWW.EscapeURL(nameParameter) +
-			"&caption=" + WWW.EscapeURL(captionParameter) + 
-			"&description=" + WWW.EscapeURL(descriptionParameter) + 
-			"&picture=" + WWW.EscapeURL(pictureParameter) + 
-			"&redirect_uri=" + WWW.EscapeURL(redirectParameter));
+	public void LikeFacebook(){
+		Application.OpenURL("https://wwww.facebook.com/111percent");
 	}
 }
