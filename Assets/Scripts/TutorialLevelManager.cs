@@ -15,7 +15,7 @@ public class TutorialLevelManager : LevelManager {
 	void Start(){
 		tutorialOne.enabled = true;
 		tutorialTwo.enabled = true;
-		b = false;
+		b = true;
 		backgroundMusic = Camera.main.GetComponent<AudioSource> ();//background music audio source is attached to the main camera
 		if (PlayerPrefs.GetInt ("isMusicOn") == 0) {//0 = true = music is on, 1 = false = music is off
 			backgroundMusic.mute = false;
@@ -26,16 +26,14 @@ public class TutorialLevelManager : LevelManager {
 		selectedNodes = new HashSet<Node> ();
 		SetSum (10);
 		audioSource = GetComponent<AudioSource> ();
+		isJuicing = true;
+		Instantiate (bricks [3], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [3], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [1], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
 	}
 
 	void Update(){
-		if (score == 0 && !b) {
-			b = true;
-			Instantiate (bricks [3], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
-			Instantiate (bricks [3], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
-			Instantiate (bricks [1], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
-		}
-		else if (score == 3 && b) {
+		if (score == 3 && b) {
 			b = false;
 			tutorialOne.enabled = false;
 			tutorialThree.enabled = true;
@@ -60,17 +58,17 @@ public class TutorialLevelManager : LevelManager {
 	}
 
 	IEnumerator tutorialTwoSpawn(){
-		Instantiate (bricks [0], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
-		Instantiate (bricks [0], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
-		Instantiate (bricks [0], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
 		yield return new WaitForSeconds (1f);
 		Instantiate (bricks [4], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bomb, spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [4], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
 		yield return new WaitForSeconds (1f);
-		Instantiate (bricks [0], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
-		Instantiate (bricks [0], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
-		Instantiate (bricks [0], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
+		Instantiate (bricks [2], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
 	}
 
 	IEnumerator tutorialThreeSpawn(){

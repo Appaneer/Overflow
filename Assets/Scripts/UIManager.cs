@@ -112,8 +112,6 @@ public class UIManager : MonoBehaviour {
 
 	public void LoadLandingPage(){
 		pauseCanvas.enabled = false;
-		if (LevelManager.levelNumber == 2)
-			Destroy (TetrisLevelManager.platform);
 		LevelManager.levelNumber = 0;
 		StartCoroutine ("LoadWithWait", "Landing Page");
 	}

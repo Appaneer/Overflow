@@ -19,7 +19,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public static bool isWatchedAds;
 	public float timeToSpawn;
 	protected float accumulator;
-	bool isJuicing;
+	protected bool isJuicing;
 	public static int levelNumber;//0 = langing page 1 = space 2 = stack
 
 	public static AudioSource backgroundMusic;
@@ -61,7 +61,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isJuicing = false;
 		accumulator = timeToSpawn;
 		if (levelNumber == 1)
-			timeToSpawn = 1f;
+			timeToSpawn = 1.2f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -126,6 +126,7 @@ public abstract class LevelManager : MonoBehaviour {
 							if(isAudioOn)
 								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
+							UIManager.updateScore (score);
 							totalNode -= selectedNodes.Count;
 							if (score < 72 && levelNumber == 2) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
@@ -141,7 +142,6 @@ public abstract class LevelManager : MonoBehaviour {
 									StartCoroutine ("juice1", 4);
 								}
 							}
-							UIManager.updateScore (score);
 							foreach (T node in selectedNodes) {
 								node.Destroy ();
 							}
@@ -152,6 +152,14 @@ public abstract class LevelManager : MonoBehaviour {
 					}
 				}
 			}
+		}
+		else if(Input.touchCount == 2){
+			foreach (T node in selectedNodes) {
+				node.HideQuad ();
+			}
+			selectedNodes = new HashSet<Node> ();
+			currentSum = 0;
+			UIManager.DisableSumText ();
 		}
 	}
 
