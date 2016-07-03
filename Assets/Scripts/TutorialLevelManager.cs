@@ -11,7 +11,6 @@ public class TutorialLevelManager : LevelManager {
 	public Canvas tutorialTwo;
 	public Canvas tutorialThree;
 	public Canvas tutorialFour;
-	public Button returnButton;
 
 	void Start(){
 		tutorialOne.enabled = true;
@@ -52,20 +51,23 @@ public class TutorialLevelManager : LevelManager {
 		else if(score == 11 && b){
 			b = false;
 			tutorialFour.enabled = false;
-			returnButton.gameObject.SetActive (true);
 		}
 		GetInput<Node> ();
+	}
+
+	public void JuanFreeCoin(){
+		PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt("Coins") + 1);
 	}
 
 	IEnumerator tutorialTwoSpawn(){
 		Instantiate (bricks [0], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [0], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [0], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
-		yield return new WaitForSeconds (0.6f);
+		yield return new WaitForSeconds (1f);
 		Instantiate (bricks [4], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bomb, spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [4], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
-		yield return new WaitForSeconds (0.6f);
+		yield return new WaitForSeconds (1f);
 		Instantiate (bricks [0], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [0], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [0], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
@@ -75,7 +77,7 @@ public class TutorialLevelManager : LevelManager {
 		Instantiate (bricks [2], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (coin, spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [1], spawnPoints [4].position, Quaternion.Euler (0, 180, 0));
-		yield return new WaitForSeconds (0.6f);
+		yield return new WaitForSeconds (1f);
 		Instantiate (bricks [2], spawnPoints [2].position, Quaternion.Euler (0, 180, 0));
 		Instantiate (bricks [1], spawnPoints [3].position, Quaternion.Euler (0, 180, 0));
 	}

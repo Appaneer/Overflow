@@ -51,6 +51,7 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
+		print (LevelManager.levelNumber);
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
@@ -111,10 +112,10 @@ public class UIManager : MonoBehaviour {
 
 	public void LoadLandingPage(){
 		pauseCanvas.enabled = false;
-		StartCoroutine ("LoadWithWait", "Landing Page");
 		if (LevelManager.levelNumber == 2)
 			Destroy (TetrisLevelManager.platform);
-		LevelManager.levelNumber = 0; 
+		LevelManager.levelNumber = 0;
+		StartCoroutine ("LoadWithWait", "Landing Page");
 	}
 
 	IEnumerator LoadWithWait(string sceneName){
