@@ -51,13 +51,13 @@ public class Node : MonoBehaviour {
 			//this means the current level is tetris level but not space level
 			--TetrisLevelManager.numberOfNodesInCol[col - 1];
 		}
-		StartCoroutine (WaitForSeconds(5f));
+		StartCoroutine (WaitForSeconds(3f));
 	}
 
 	IEnumerator WaitForSeconds(float second){
 		if (LevelManager.levelNumber == 2) {
 			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-			GetComponent<Rigidbody> ().AddForce (new Vector3(0, Random.Range(-35f,-50f), Random.Range(80f,100f)));
+			GetComponent<Rigidbody> ().AddForce (new Vector3(0, -20f, Random.Range(90f,100f)));
 			yield return new WaitForSeconds (second);
 		}
 		Destroy (gameObject);

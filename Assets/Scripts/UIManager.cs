@@ -55,6 +55,7 @@ public class UIManager : MonoBehaviour {
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
 		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
+		instance = this;
 		if (LevelManager.levelNumber != 3) {//if this is not tutorial
 			unpaused.TransitionTo (0.01f);
 			if (PlayerPrefs.GetInt ("isAudioOn") == 0)
@@ -65,7 +66,6 @@ public class UIManager : MonoBehaviour {
 				musicButton.image.sprite = musicOnSprite;
 			else
 				musicButton.image.sprite = musicOffSprite;
-			instance = this;
 			if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
 				Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
 			} else if (!Advertisement.isSupported) {
