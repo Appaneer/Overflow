@@ -51,30 +51,32 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
-		unpaused.TransitionTo (0.01f);
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
 		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
-		if (PlayerPrefs.GetInt ("isAudioOn") == 0)
-			soundButton.image.sprite = soundOnSprite;
-		else
-			soundButton.image.sprite = soundOffSprite;
-		if (PlayerPrefs.GetInt ("isMusicOn") == 0)
-			musicButton.image.sprite = musicOnSprite;
-		else
-			musicButton.image.sprite = musicOffSprite;
-		instance = this;
-		if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
-			Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
-		} else if (!Advertisement.isSupported) {
-			Debug.LogWarning("Unable to initialize Unity Ads. Platform not supported.");
-		} else if (Advertisement.isInitialized) {
-			Debug.Log("Unity Ads is already initialized.");
-		} else {
-			Debug.Log(string.Format("Initialize Unity Ads using Game ID {0} with Test Mode {1}.",
-				gameId, enableTestMode ? "enabled" : "disabled"));
-			Advertisement.Initialize(gameId, enableTestMode);
+		if (LevelManager.levelNumber != 3) {//if this is not tutorial
+			unpaused.TransitionTo (0.01f);
+			if (PlayerPrefs.GetInt ("isAudioOn") == 0)
+				soundButton.image.sprite = soundOnSprite;
+			else
+				soundButton.image.sprite = soundOffSprite;
+			if (PlayerPrefs.GetInt ("isMusicOn") == 0)
+				musicButton.image.sprite = musicOnSprite;
+			else
+				musicButton.image.sprite = musicOffSprite;
+			instance = this;
+			if (string.IsNullOrEmpty(gameId)) { // Make sure the Game ID is set.
+				Debug.LogError("Failed to initialize Unity Ads. Game ID is null or empty.");
+			} else if (!Advertisement.isSupported) {
+				Debug.LogWarning("Unable to initialize Unity Ads. Platform not supported.");
+			} else if (Advertisement.isInitialized) {
+				Debug.Log("Unity Ads is already initialized.");
+			} else {
+				Debug.Log(string.Format("Initialize Unity Ads using Game ID {0} with Test Mode {1}.",
+					gameId, enableTestMode ? "enabled" : "disabled"));
+				Advertisement.Initialize(gameId, enableTestMode);
+			}
 		}
 	}
 		
@@ -88,21 +90,31 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadTetrisLevel(){
-		LevelManager.isSpaceLevel = false;
-		StartCoroutine ("LoadWithWait", "Tetris Level");
+		if (PlayerPrefs.GetInt ("Num1") == 0 && PlayerPrefs.GetInt ("Num2") == 0 && PlayerPrefs.GetInt ("Coins") == 0) {
+			LevelManager.levelNumber = 3;
+			StartCoroutine ("LoadWithWait", "Tutorial Level");
+		} else {
+			LevelManager.levelNumber = 2;
+			StartCoroutine ("LoadWithWait", "Tetris Level");
+		}
 	}
 
 	public void LoadSpaceLevel(){
-		LevelManager.isSpaceLevel = true;
-		StartCoroutine ("LoadWithWait", "Space Level");
+		if (PlayerPrefs.GetInt ("Num1") == 0 && PlayerPrefs.GetInt ("Num2") == 0 && PlayerPrefs.GetInt ("Coins") == 0) {
+			LevelManager.levelNumber = 3;
+			StartCoroutine ("LoadWithWait", "Tutorial Level");
+		} else {
+			LevelManager.levelNumber = 1;
+			StartCoroutine ("LoadWithWait", "Space Level");
+		}
 	}
 
 	public void LoadLandingPage(){
 		pauseCanvas.enabled = false;
 		StartCoroutine ("LoadWithWait", "Landing Page");
-		if (!LevelManager.isSpaceLevel)
+		if (LevelManager.levelNumber == 2)
 			Destroy (TetrisLevelManager.platform);
-		LevelManager.isSpaceLevel = false; 
+		LevelManager.levelNumber = 0; 
 	}
 
 	IEnumerator LoadWithWait(string sceneName){

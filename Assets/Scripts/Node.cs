@@ -55,9 +55,9 @@ public class Node : MonoBehaviour {
 	}
 
 	IEnumerator WaitForSeconds(float second){
-		if (!LevelManager.isSpaceLevel) {
+		if (LevelManager.levelNumber == 2) {
 			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-			GetComponent<Rigidbody> ().AddForce (new Vector3(0, Random.Range(-35f,-50f), Random.Range(50f,80f)));
+			GetComponent<Rigidbody> ().AddForce (new Vector3(0, Random.Range(-35f,-50f), Random.Range(80f,100f)));
 			yield return new WaitForSeconds (second);
 		}
 		Destroy (gameObject);

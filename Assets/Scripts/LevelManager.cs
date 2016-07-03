@@ -20,7 +20,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 	bool isJuicing;
-	public static bool isSpaceLevel;//true = the current level is space level, false = the current level is stack level or landing page
+	public static int levelNumber;//0 = langing page 1 = space 2 = stack
 
 	public static AudioSource backgroundMusic;
 	public static bool isAudioOn;
@@ -60,8 +60,8 @@ public abstract class LevelManager : MonoBehaviour {
 		isInputDisable = false;
 		isJuicing = false;
 		accumulator = timeToSpawn;
-		if (isSpaceLevel)
-			timeToSpawn = 1.2f;
+		if (levelNumber == 1)
+			timeToSpawn = 1f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -72,7 +72,9 @@ public abstract class LevelManager : MonoBehaviour {
 			SetSum (PlayerPrefs.GetInt ("NextSum"));
 			PlayerPrefs.SetInt ("NextSum", 0);
 		}
+		print (sum);
 		UIManager.UpdateSumText (sum);
+
 	}
 
 	protected void GetInput<T>() where T : Node{
@@ -90,6 +92,7 @@ public abstract class LevelManager : MonoBehaviour {
 						e.ToString ();
 					}
 				}
+
 				currentSum = GetCurrentSum ();
 				UIManager.UpdateCurrentSum (currentSum);
 				switch (touch.phase) {
@@ -108,6 +111,7 @@ public abstract class LevelManager : MonoBehaviour {
 								}
 								node.HideQuad();
 							}
+
 						}
 						catch(NullReferenceException e){
 							Debug.Log (e.Message);
@@ -123,7 +127,7 @@ public abstract class LevelManager : MonoBehaviour {
 								audioSource.PlayOneShot (sfx);
 							score += selectedNodes.Count;
 							totalNode -= selectedNodes.Count;
-							if (score < 72 && !isSpaceLevel) {
+							if (score < 72 && levelNumber == 2) {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							if (!isJuicing) {

@@ -19,10 +19,8 @@ public class TetrisLevelManager : LevelManager {
 		platform = GameObject.Find ("platform");
 		totalNode = 30;
 		Initialization ();
-		print (PlayerPrefs.GetInt ("NextSum"));
 		numberOfNodesInCol = new int[] {5,5,5,5,5,5};
 		InitMap ();
-
 		if (!isShowedTutorial && PlayerPrefs.GetInt ("Coins") == 0) {
 			UIManager.instance.tutorialCanvas.enabled = true;
 			platform.GetComponent<Renderer>().enabled = false;
