@@ -38,8 +38,8 @@ public class UIManager : MonoBehaviour {
 	public Animator coinEarnedAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
-	private const string FACEBOOK_APP_ID = "1182354041784013";
+//	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
+//	private const string FACEBOOK_APP_ID = "1182354041784013";
 	public string gameId;
 	public bool enableTestMode;
 	public static UIManager instance;
@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
-		print (LevelManager.levelNumber);
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
@@ -91,23 +90,13 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LoadTetrisLevel(){
-		if (PlayerPrefs.GetInt ("Num1") == 0 && PlayerPrefs.GetInt ("Num2") == 0 && PlayerPrefs.GetInt ("Coins") == 0) {
-			LevelManager.levelNumber = 3;
-			StartCoroutine ("LoadWithWait", "Tutorial Level");
-		} else {
-			LevelManager.levelNumber = 2;
-			StartCoroutine ("LoadWithWait", "Tetris Level");
-		}
+		LevelManager.levelNumber = 2;
+		StartCoroutine ("LoadWithWait", "Tetris Level");
 	}
 
 	public void LoadSpaceLevel(){
-		if (PlayerPrefs.GetInt ("Num1") == 0 && PlayerPrefs.GetInt ("Num2") == 0 && PlayerPrefs.GetInt ("Coins") == 0) {
-			LevelManager.levelNumber = 3;
-			StartCoroutine ("LoadWithWait", "Tutorial Level");
-		} else {
-			LevelManager.levelNumber = 1;
-			StartCoroutine ("LoadWithWait", "Space Level");
-		}
+		LevelManager.levelNumber = 1;
+		StartCoroutine ("LoadWithWait", "Space Level");
 	}
 
 	public void LoadLandingPage(){
@@ -124,37 +113,16 @@ public class UIManager : MonoBehaviour {
 	public void ToggleTutorialPage(){
 		tutorialCanvas.enabled = !tutorialCanvas.enabled;
 	}
-	 
-	public bool isOnCreditPage = false;
 
 	public void ToggleCreditPage(){
-	//	ToggleButton ();
-		isOnSettingPage = false;
-		isOnCreditPage = !isOnCreditPage;
-
-		if (isOnCreditPage == false) {
-			settingPage.enabled = false;
-			creditPage.enabled = false;
-			shopButton.enabled = true;
-			shopButton.image.enabled = true;
-		}
-
-		else if(isOnCreditPage == true) {
-			settingPage.enabled = false;
-			creditPage.enabled = true;
-			shopButton.enabled = false;
-			shopButton.image.enabled = false;
-		}
-	//	settingButton.enabled = settingButton.enabled ? false : true;
-	//	shareButton.enabled = shareButton.enabled ? false : true;
+		creditPage.enabled = !creditPage.enabled;
+		gamePage.enabled = !gamePage.enabled;
 	}
 
 	public bool isOnSettingPage = false;
 
 	public void ToggleSettingPage(){
-	//	ToggleButton ();
 		isOnSettingPage = !isOnSettingPage;
-		isOnCreditPage = false;
 		if (isOnSettingPage == false) {
 			settingPage.enabled = false;
 			creditPage.enabled = false;
@@ -168,9 +136,6 @@ public class UIManager : MonoBehaviour {
 			shopButton.enabled = false;
 			shopButton.image.enabled = false;
 		}
-
-	//	creditButton.enabled = creditButton.enabled ? false : true;
-	//	shareButton.enabled = shareButton.enabled ? false : true;
 	}
 
 	public void ToggleShopPage(){
@@ -269,7 +234,7 @@ public class UIManager : MonoBehaviour {
 			//buy stuff
 			TogglePurchasedPage();
 			PlayerPrefs.SetInt("Freeze", PlayerPrefs.GetInt("Freeze") + 1);
-			CoinManager.Withdraw (price);
+			PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") - price);
 			updateCoin ();
 		}
 		UIManager.updateText (GameObject.Find("freeze").GetComponent<Text>(), PlayerPrefs.GetInt("Freeze"));
@@ -281,7 +246,7 @@ public class UIManager : MonoBehaviour {
 			//buy stuff
 			TogglePurchasedPage();
 			PlayerPrefs.SetInt("Num"+number, PlayerPrefs.GetInt("Num"+number) + 1);
-			CoinManager.Withdraw (price);
+			PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") - price);
 			updateCoin ();
 		}
 		UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
@@ -303,7 +268,7 @@ public class UIManager : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Coins") >= price) {
 			TogglePurchasedPage();
 			PlayerPrefs.SetInt ("NextSum", number);
-			CoinManager.Withdraw (price);
+			PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") - price);
 			updateCoin ();
 		}
 	}
@@ -314,7 +279,7 @@ public class UIManager : MonoBehaviour {
 			instance.ShowGameOverPage ();
 		else {
 			if(instance.endGameCanvas.enabled == false)
-				CoinManager.Deposit (LevelManager.score / 10);
+				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + LevelManager.score / 10);
 			instance.endGameCanvas.enabled = true;
 		}
 			
@@ -359,10 +324,10 @@ public class UIManager : MonoBehaviour {
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
 			if (flag) {
-				CoinManager.Deposit (20);
+				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + 20);
 				updateCoin ();
 				coinEarnedInGameText.text = "+20";
-				coinEarnedAnim.Play ("coinEarned 0");
+				coinEarnedAnim.Play ("coinEarned");
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;

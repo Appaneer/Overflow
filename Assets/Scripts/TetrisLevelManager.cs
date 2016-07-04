@@ -33,7 +33,7 @@ public class TetrisLevelManager : LevelManager {
 			GetInput<Node> ();
 		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
 			isShowedTutorial = true;
-			UIManager.instance.tutorialCanvas.enabled = false;
+			UIManager.instance.tutorialCanvas.gameObject.SetActive (false);
 			platform.GetComponent<Renderer>().enabled = true;
 		}
 	}

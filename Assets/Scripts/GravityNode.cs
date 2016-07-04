@@ -33,7 +33,7 @@ public class GravityNode : Node {
 				}
 			}
 			else if(myPowerUp == PowerUp.coin){
-				CoinManager.Deposit (1);
+				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + 1);
 			}
 		}
 		

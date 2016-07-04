@@ -31,6 +31,10 @@ public class Node : MonoBehaviour {
 	/// Destroy this instance.
 	/// </summary>
 	public void Destroy(){
+		Destroy (80f);
+	}
+
+	public void Destroy(float force){
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
@@ -38,26 +42,26 @@ public class Node : MonoBehaviour {
 				for(int i = 0; i < arr.Length && temp < 8; i++){
 					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.8f && transform.position - arr[i].transform.position != Vector3.zero
 						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.bomb){//root 2 + some tolerance
-						arr [i].GetComponent<Node> ().Destroy ();
+						arr [i].GetComponent<Node> ().Destroy (200f);
 						temp++;
 					}
 				}
 			}
 			else if(myPowerUp == PowerUp.coin){
-				CoinManager.Deposit (1);
+				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + 1);
 			}
 		}
 		if (col != 0) {
 			//this means the current level is tetris level but not space level
 			--TetrisLevelManager.numberOfNodesInCol[col - 1];
 		}
-		StartCoroutine (WaitForSeconds(2f));
+		StartCoroutine (WaitForSeconds(2f, force));
 	}
 
-	IEnumerator WaitForSeconds(float second){
+	IEnumerator WaitForSeconds(float second, float force){
 		if (LevelManager.levelNumber == 2) {
 			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-			GetComponent<Rigidbody> ().AddForce (new Vector3(0, -10f, Random.Range(100f,150f)));
+			GetComponent<Rigidbody> ().AddForce (new Vector3(0, -10f, force));
 			yield return new WaitForSeconds (second);
 		}
 		Destroy (gameObject);

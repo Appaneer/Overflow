@@ -22,7 +22,7 @@ public class SpaceLevelManager : LevelManager {
 				UIManager.ShowEndGamePage ();
 		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
 			isShowedTutorial = true;
-			UIManager.instance.tutorialCanvas.enabled = false;
+			UIManager.instance.tutorialCanvas.gameObject.SetActive (false);
 		}
 	}
 
