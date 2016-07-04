@@ -55,17 +55,8 @@ public class Node : MonoBehaviour {
 			//this means the current level is tetris level but not space level
 			--TetrisLevelManager.numberOfNodesInCol[col - 1];
 		}
-		StartCoroutine (WaitForSeconds(2f, force));
-	}
-
-	IEnumerator WaitForSeconds(float second, float force){
-		if (LevelManager.levelNumber == 2) {
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-			GetComponent<Rigidbody> ().AddForce (new Vector3(0, -10f, force));
-			yield return new WaitForSeconds (second);
-		}
 		Destroy (gameObject);
-	}
+	}	
 
 	/// <summary>
 	/// Displaies the semi transparent quad to indicate this node has been selected.
