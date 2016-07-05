@@ -20,6 +20,7 @@ public abstract class LevelManager : MonoBehaviour {
 	public float timeToSpawn;
 	protected float accumulator;
 	protected bool isJuicing;
+	private int currentSum = 0;
 	public static int levelNumber;//0 = langing page 1 = space 2 = stack
 
 	public static AudioSource backgroundMusic;
@@ -31,18 +32,11 @@ public abstract class LevelManager : MonoBehaviour {
 	AudioClip sfx;
 	protected AudioSource audioSource;
 
-	private int currentSum = 0;
-
 	protected bool isShowedTutorial = false;//was the tutorial page showed?
-	//this is abstract class, it shouldn't have Start() or Update()
 
 	Vector3 originalCameraPosition = new Vector3(0, 0.15f, -9f);
-	public float shakeAmount = 0;
+	public float shakeAmount = 0; 
 
-	/// <summary>
-	/// Sets the sum.
-	/// </summary>
-	/// <param name="s">Sum</param>
 	public static void SetSum(int s){
 		sum = s;
 	}
@@ -132,13 +126,17 @@ public abstract class LevelManager : MonoBehaviour {
 								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							if (!isJuicing) {
-								if (score <= 125 && score >= 100 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+								totalNode = GameObject.FindGameObjectsWithTag ("Node").Length;
+								if(totalNode <= 10){
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score <= 150 && score >= 125 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+								else if (score <= 125 && score >= 100 && totalNode <= 20) {
+									StartCoroutine ("juice1", 2);
+								}
+								else if (score <= 150 && score >= 125 && totalNode <= 24) {
 									StartCoroutine ("juice1", 3);
 								}
-								else if (score >= 150 && GameObject.FindGameObjectsWithTag ("Node").Length <= 20) {
+								else if (score >= 150 && totalNode <= 24) {
 									StartCoroutine ("juice1", 4);
 								}
 							}

@@ -286,13 +286,9 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void ShowGameOverPage(){
-		Rigidbody[] bigbodies = GameObject.FindObjectsOfType<Rigidbody> ();
-		foreach(Rigidbody r in bigbodies){
-			r.constraints = RigidbodyConstraints.None;
-			if(LevelManager.levelNumber == 1)
-				r.AddForce (new Vector3(UnityEngine.Random.Range(-100f,100f), UnityEngine.Random.Range(-100f,100f), UnityEngine.Random.Range(-100f,100f)));
-			else
-				r.AddForce (new Vector3(UnityEngine.Random.Range(-30f,30f), UnityEngine.Random.Range(10f,30f), UnityEngine.Random.Range(-30f,30f)));
+		Node[] bigbodies = GameObject.FindObjectsOfType<Node> ();
+		foreach(Node r in bigbodies){
+			r.Destroy ();	
 		}
 		if(LevelManager.score > PlayerPrefs.GetInt("HighScore")){
 			PlayerPrefs.SetInt ("HighScore", LevelManager.score);

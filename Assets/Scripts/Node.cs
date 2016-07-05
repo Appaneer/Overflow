@@ -14,6 +14,11 @@ public class Node : MonoBehaviour {
 	/// </summary>
 	public Transform semiTransparentQuad;
 	protected Animator anim;
+	public static ParticleSystem particle;
+
+	public ParticleSystem[] particleFXs;//particle effects
+	public ParticleSystem bombParticleFX;
+	public ParticleSystem coinParticleFX;
 
 	/// <summary>
 	/// The column position of the node, range 1-6, 1 being the far last 6 being the far right
@@ -21,20 +26,14 @@ public class Node : MonoBehaviour {
 	public int col;
 
 	void Start(){
+		particle = GameObject.FindObjectOfType<ParticleSystem> ();
 		semiTransparentQuad = GetComponentsInChildren<Transform> () [2];
 		anim = gameObject.GetComponent<Animator> ();
 		if (value != 0)
 			isPowerUp = false;
 	}
 
-	/// <summary>
-	/// Destroy this instance.
-	/// </summary>
 	public void Destroy(){
-		Destroy (80f);
-	}
-
-	public void Destroy(float force){
 		if(isPowerUp){
 			GameObject[] arr = GameObject.FindGameObjectsWithTag ("Node");
 			int temp = 0;
@@ -42,7 +41,7 @@ public class Node : MonoBehaviour {
 				for(int i = 0; i < arr.Length && temp < 8; i++){
 					if(Vector2.Distance(transform.position, arr[i].transform.position) <= 1.8f && transform.position - arr[i].transform.position != Vector3.zero
 						&& arr[i].GetComponent<Node>().myPowerUp != PowerUp.bomb){//root 2 + some tolerance
-						arr [i].GetComponent<Node> ().Destroy (200f);
+						arr [i].GetComponent<Node> ().Destroy ();
 						temp++;
 					}
 				}
@@ -55,8 +54,17 @@ public class Node : MonoBehaviour {
 			//this means the current level is tetris level but not space level
 			--TetrisLevelManager.numberOfNodesInCol[col - 1];
 		}
+		ParticleSystem particle;
+		if(!isPowerUp)
+			particle = Instantiate (particleFXs[value - 1], transform.position, Quaternion.identity) as ParticleSystem;
+		else if(myPowerUp == PowerUp.bomb)
+			particle = Instantiate (bombParticleFX, transform.position, Quaternion.identity) as ParticleSystem;
+		else
+			particle = Instantiate (coinParticleFX, transform.position, Quaternion.identity) as ParticleSystem;
+		particle.Emit (20);
+		Destroy (particle.gameObject, 1f);
 		Destroy (gameObject);
-	}	
+	}
 
 	/// <summary>
 	/// Displaies the semi transparent quad to indicate this node has been selected.
