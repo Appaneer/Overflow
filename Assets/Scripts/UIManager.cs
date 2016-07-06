@@ -290,12 +290,17 @@ public class UIManager : MonoBehaviour {
 		foreach(Node r in bigbodies){
 			r.Destroy ();	
 		}
-		if(LevelManager.score > PlayerPrefs.GetInt("HighScore")){
-			PlayerPrefs.SetInt ("HighScore", LevelManager.score);
+		if (LevelManager.levelNumber == 1) {//space mode
+			if (LevelManager.score > PlayerPrefs.GetInt ("HighScoreSpace"))
+				PlayerPrefs.SetInt ("HighScoreSpace", LevelManager.score);
+			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreSpace");
+		} else {
+			if(LevelManager.score > PlayerPrefs.GetInt("HighScoreStack"))
+				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
+			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
 		gameOverAnim.SetTrigger ("GameOver");
 		scoreText2.text = "Score\n"+LevelManager.score;
-		highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScore");
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
 		coinEarnedInGameText.text = "+" + (LevelManager.score / 10);
 		PlayerPrefs.SetInt ("NextSum", 0);

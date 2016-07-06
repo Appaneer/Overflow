@@ -11,7 +11,7 @@ public class RandomRotation : MonoBehaviour {
 		float ranScale = Random.Range (0.4f, 0.6f);
 		newMaterial.color = whateverColor;
 		gameObjectRenderer.material = newMaterial ;
-		Destroy (gameObject, 5);
+		Destroy (gameObject, 3.5f);
 	}
 
 
