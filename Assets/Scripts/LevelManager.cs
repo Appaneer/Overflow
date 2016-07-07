@@ -12,6 +12,7 @@ public abstract class LevelManager : MonoBehaviour {
 	protected int index;
 	public static int sum;
 	public HashSet<Node> selectedNodes;
+	public Vector3 lastNodeSelected;//the transform of the last node user had selected
 	public static bool isPaused = false;
 	public static bool isInputDisable;
 	public GameObject bomb;
@@ -79,8 +80,18 @@ public abstract class LevelManager : MonoBehaviour {
 					T tempNode = hit.transform.gameObject.GetComponent<T> ();
 					try{
 						tempNode.DisplayQuad ();
-						if(selectedNodes.Add (tempNode) && isAudioOn)
+						if(lastNodeSelected != Vector3.zero && Vector3.Distance(tempNode.transform.position, lastNodeSelected) >= 1.4f){
+							tempNode.HideQuad();
+							foreach (T node in selectedNodes) {
+								node.HideQuad ();
+							}
+							selectedNodes = new HashSet<Node> ();
+							UIManager.DisableSumText ();
+							currentSum = 0;
+						}
+						else if(selectedNodes.Add (tempNode) && isAudioOn)
 							audioSource.PlayOneShot (clickSFX);
+						lastNodeSelected = tempNode.transform.position;
 					}
 					catch(NullReferenceException e){
 						e.ToString ();
@@ -92,6 +103,7 @@ public abstract class LevelManager : MonoBehaviour {
 				switch (touch.phase) {
 				case TouchPhase.Ended:
 					{
+						lastNodeSelected = Vector3.zero;
 						UIManager.DisableSumText ();
 						// the touch is ended so now we can calculate the time and distance
 						try{

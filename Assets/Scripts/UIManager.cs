@@ -1,4 +1,4 @@
-﻿	using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour {
 	public Canvas settingPage;
 	public Canvas shopPage;
 	public Canvas purchasedPage;
+	public Canvas exitPage;
 	public Button shopButton;
 	public Button creditButton;
 	public Button settingButton;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour {
 	public Sprite soundOffSprite;
 	public Text coinText;
 	public Animator playButtonAnim;
+	public ParticleSystem coinParticleEffect;
 	//-------tetris/space scene------
 	public Canvas endGameCanvas;
 	public Button videoButton;
@@ -81,8 +83,20 @@ public class UIManager : MonoBehaviour {
 	}
 		
 	void Update(){
-		if (Input.GetKey (KeyCode.Escape))
-			ReturnHome ();
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if(LevelManager.levelNumber == 0)
+				exitPage.enabled = true;
+			else
+				ReturnHome ();
+		}
+	}
+
+	public void DisableExitPage(){
+		exitPage.enabled = false;
+	}
+
+	public void ExitGame(){
+		Application.Quit ();
 	}
 
 	public void Play(){
@@ -335,8 +349,7 @@ public class UIManager : MonoBehaviour {
 			if (flag) {
 				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + 20);
 				updateCoin ();
-				coinEarnedInGameText.text = "+20";
-				coinEarnedAnim.Play ("coinEarned");
+				coinParticleEffect.Emit (20);
 			} else 
 				StartCoroutine ("DeleteNodes");
 			break;

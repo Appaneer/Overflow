@@ -8,24 +8,24 @@ using System.Runtime.InteropServices;
  */
 
 public class NativeShare : MonoBehaviour {
-	public string ScreenshotName = "screenshot.png";
+	public string ScreenshotName = "overflow_screenshot.png";
 
-    public void ShareScreenshotWithText(string text)
+    public void ShareScreenshotWithText()
     {
 		/*Unity screenshots are run asynchronously and as such we will need to check that the file has been written, 
 		 * or put a delay between capturing the screenshot and sharing it using a coroutine. 
 		 * Otherwise we will likely end up trying to access a file that does not yet exist or will access a previous version of the screenshot.*/
-		StartCoroutine (Idk(text));
+		StartCoroutine (Idk());
     }
 
-	IEnumerator Idk(string text){
+	IEnumerator Idk(){
 		string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
 		Application.CaptureScreenshot(ScreenshotName);
 		yield return new WaitForEndOfFrame ();
-		Share(text,screenShotPath,"");
+		Share("Swag! I finally got "+LevelManager.score+" in #Overflow! Can you beat me in #Overflow? Search Overflow in AppStore!",screenShotPath,"","Overflow LOVE");
 	}
 
-	public void Share(string shareText, string imagePath, string url, string subject = "")
+	public void Share(string shareText, string imagePath, string url, string subject)
 	{
 #if UNITY_ANDROID
 		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
@@ -37,8 +37,6 @@ public class NativeShare : MonoBehaviour {
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
 		intentObject.Call<AndroidJavaObject>("setType", "image/*");
 
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TITLE"), "Overflow");
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_SUBJECT"), "Overflow");
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
 
 		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
