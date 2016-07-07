@@ -19,9 +19,9 @@ public class NativeShare : MonoBehaviour {
     }
 
 	IEnumerator Idk(string text){
+		string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
 		Application.CaptureScreenshot(ScreenshotName);
 		yield return new WaitForEndOfFrame ();
-		string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
 		Share(text,screenShotPath,"");
 	}
 
@@ -35,10 +35,12 @@ public class NativeShare : MonoBehaviour {
 		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
 		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath);
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-		intentObject.Call<AndroidJavaObject>("setType", "image/png");
-		
+		intentObject.Call<AndroidJavaObject>("setType", "image/*");
+
+		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TITLE"), "Overflow");
+		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_SUBJECT"), "Overflow");
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
-		
+
 		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
 		
