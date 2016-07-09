@@ -135,7 +135,7 @@ public abstract class LevelManager : MonoBehaviour {
 							UIManager.updateScore (score);
 							totalNode -= selectedNodes.Count;
 							if (score < 72 && levelNumber == 2) {
-								timeToSpawn = -0.015f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
+								timeToSpawn = -0.016f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							if (!isJuicing) {
 								totalNode = GameObject.FindGameObjectsWithTag ("Node").Length;
@@ -145,10 +145,10 @@ public abstract class LevelManager : MonoBehaviour {
 								else if (score <= 125 && score >= 100 && totalNode <= 20) {
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score <= 150 && score >= 125 && totalNode <= 24) {
+								else if (score <= 150 && score >= 125 && totalNode <= 20) {
 									StartCoroutine ("juice1", 3);
 								}
-								else if (score >= 150 && totalNode <= 24) {
+								else if (score >= 150 && totalNode <= 20) {
 									StartCoroutine ("juice1", 4);
 								}
 							}
