@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿	using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
@@ -37,7 +37,6 @@ public class UIManager : MonoBehaviour {
 	public Text coinEarnedInGameText;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
 	public Animator gameOverAnim;
-	public Animator coinEarnedAnim;
 	public Text targetSumText;
 	public Text displaySumText;
 //	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
@@ -313,12 +312,19 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
 			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
-		gameOverAnim.SetTrigger ("GameOver");
-		scoreText2.text = "Score\n"+LevelManager.score;
+		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.009f));
+		gameOverAnim.SetTrigger ("GameOver");	
+		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.04f));
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
-		coinEarnedInGameText.text = "+" + (LevelManager.score / 10);
 		PlayerPrefs.SetInt ("NextSum", 0);
-		coinEarnedAnim.Play ("coinEarned");
+	}
+
+	IEnumerator TextAnimation(Text txt, int number, string message, float speed){
+		yield return new WaitForSeconds (1f);
+		for(int i = 0; i <= number; i++){
+			txt.text = message + i;
+			yield return new WaitForSeconds (speed);
+		}
 	}
 
 	public void ShowRewardedAd(bool isCoinRewarded)
