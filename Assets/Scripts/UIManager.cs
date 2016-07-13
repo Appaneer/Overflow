@@ -142,7 +142,6 @@ public class UIManager : MonoBehaviour {
 			shopButton.enabled = true;
 			shopButton.image.enabled = true;
 		}
-
 		else if(isOnSettingPage == true) {
 			settingPage.enabled = true;
 			creditPage.enabled = false;
@@ -312,7 +311,7 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
 			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
-		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.009f));
+		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.007f));
 		gameOverAnim.SetTrigger ("GameOver");	
 		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.04f));
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
