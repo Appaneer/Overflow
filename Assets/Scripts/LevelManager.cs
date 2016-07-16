@@ -56,7 +56,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isJuicing = false;
 		accumulator = timeToSpawn;
 		if (levelNumber == 1)
-			timeToSpawn = 1f;
+			timeToSpawn = 0.7f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -134,8 +134,8 @@ public abstract class LevelManager : MonoBehaviour {
 							score += selectedNodes.Count;
 							UIManager.updateScore (score);
 							totalNode -= selectedNodes.Count;
-							if (score < 72 && levelNumber == 2) {
-								timeToSpawn = -0.016f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
+							if (timeToSpawn > 0.9f && levelNumber == 2) {
+								timeToSpawn = -0.006f * score + 2f;//using an equation to model this y = -0.015x + 2(y is timeToSpawn and x is score)
 							}
 							if (!isJuicing) {
 								totalNode = GameObject.FindGameObjectsWithTag ("Node").Length;
