@@ -56,7 +56,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isJuicing = false;
 		accumulator = timeToSpawn;
 		if (levelNumber == 1)
-			timeToSpawn = 0.7f;
+			timeToSpawn = 0.82f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -142,14 +142,17 @@ public abstract class LevelManager : MonoBehaviour {
 								if(totalNode <= 10){
 									StartCoroutine ("juice1", 2);
 								}
+								else if(score <= 100 && score >= 50 && totalNode <= 15){
+									StartCoroutine ("juice1", 2);
+								}
 								else if (score <= 125 && score >= 100 && totalNode <= 20) {
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score <= 150 && score >= 125 && totalNode <= 20) {
-									StartCoroutine ("juice1", 3);
+								else if (score <= 150 && score >= 125 && totalNode <= 25) {
+									StartCoroutine ("juice1", 2);
 								}
-								else if (score >= 150 && totalNode <= 20) {
-									StartCoroutine ("juice1", 4);
+								else if (score >= 150 && totalNode <= 30) {
+									StartCoroutine ("juice1", 2);
 								}
 							}
 							foreach (T node in selectedNodes) {

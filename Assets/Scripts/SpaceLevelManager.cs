@@ -18,7 +18,7 @@ public class SpaceLevelManager : LevelManager {
 		if (isShowedTutorial) {
 			SpawnNodes ();
 			GetInput<Node> ();
-			if(totalNode >= 65)
+			if(totalNode >= 70)
 				UIManager.ShowEndGamePage ();
 		} else if (!isShowedTutorial && Input.GetMouseButtonDown (0)) {
 			isShowedTutorial = true;

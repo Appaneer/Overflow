@@ -311,9 +311,9 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
 			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
-		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.007f));
+		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.005f));
 		gameOverAnim.SetTrigger ("GameOver");	
-		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.04f));
+		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.05f));
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
 		PlayerPrefs.SetInt ("NextSum", 0);
 	}
