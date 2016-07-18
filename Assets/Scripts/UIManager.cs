@@ -36,11 +36,10 @@ public class UIManager : MonoBehaviour {
 	public Text highScoreText;
 	public Text coinEarnedInGameText;
 	private bool flag;//if true then reward coins after ads, if false then delete nodes(chance to continue game) after ads
+	private static bool isGameEnded;
 	public Animator gameOverAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-//	private const string FACEBOOK_URL = "http://www.facebook.com/dialog/feed";
-//	private const string FACEBOOK_APP_ID = "1182354041784013";
 	public string gameId;
 	public bool enableTestMode;
 	public static UIManager instance;
@@ -52,6 +51,7 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
+		isGameEnded = false;
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
 		}
@@ -128,8 +128,10 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void ToggleCreditPage(){
-		creditPage.enabled = !creditPage.enabled;
-		gamePage.enabled = !gamePage.enabled;
+		if (!settingPage.enabled) {
+			creditPage.enabled = !creditPage.enabled;
+			gamePage.enabled = !gamePage.enabled;
+		}
 	}
 
 	public bool isOnSettingPage = false;
@@ -202,21 +204,24 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void TogglePause(){
-		LevelManager.isPaused = !LevelManager.isPaused;
-		LevelManager.isInputDisable = !LevelManager.isInputDisable;
-		Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
-		Camera.main.farClipPlane = Camera.main.farClipPlane == 1000f ? 10f : 1000f; 
-		pauseCanvas.enabled = !pauseCanvas.enabled;
-		if (Time.timeScale == 0)
-			paused.TransitionTo (0.01f);
-		else
-			unpaused.TransitionTo (0.01f);
+		if (!isGameEnded) {
+			LevelManager.isPaused = !LevelManager.isPaused;
+			LevelManager.isInputDisable = !LevelManager.isInputDisable;
+			Time.timeScale = Time.timeScale == 1 ? 0 : 1; 
+			Camera.main.farClipPlane = Camera.main.farClipPlane == 1000f ? 10f : 1000f; 
+			pauseCanvas.enabled = !pauseCanvas.enabled;
+			if (Time.timeScale == 0)
+				paused.TransitionTo (0.01f);
+			else
+				unpaused.TransitionTo (0.01f);
+		}
 	}
 		
 	public void ReturnHome(){
 		LevelManager.isPaused = !LevelManager.isPaused;
 		LevelManager.isInputDisable = !LevelManager.isInputDisable;
 		Time.timeScale = 1;
+		pauseCanvas.enabled = false;
 		LevelManager.backgroundMusic.volume = 0.0f;
 		LoadLandingPage ();
 	}
@@ -287,6 +292,7 @@ public class UIManager : MonoBehaviour {
 
 	public static void ShowEndGamePage(){
 		Pause ();
+		isGameEnded = true;
 		if (LevelManager.isWatchedAds)
 			instance.ShowGameOverPage ();
 		else {
@@ -294,7 +300,6 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("Coins", PlayerPrefs.GetInt ("Coins") + LevelManager.score / 10);
 			instance.endGameCanvas.enabled = true;
 		}
-			
 	}
 
 	public void ShowGameOverPage(){
@@ -311,8 +316,8 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
 			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
-		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.005f));
-		gameOverAnim.SetTrigger ("GameOver");	
+		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.002f));
+		gameOverAnim.SetTrigger ("GameOver");
 		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.05f));
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
 		PlayerPrefs.SetInt ("NextSum", 0);
@@ -337,12 +342,19 @@ public class UIManager : MonoBehaviour {
 	}
 		
 	IEnumerator DeleteNodes(){
-		LevelManager.DeleteNodes (4);
+		if (LevelManager.levelNumber == 1) {
+			LevelManager.DeleteNodes (GameObject.FindGameObjectsWithTag ("Node").Length - 55);
+			LevelManager.instance.totalNode = 55;
+		}
+		else
+			LevelManager.DeleteNodes (6);
+		
 		yield return new WaitForSeconds (0.75f);
 		LevelManager.isPaused = false;
 		LevelManager.isInputDisable = false;
 		LevelManager.isWatchedAds = true;
 		instance.endGameCanvas.enabled = false;
+		isGameEnded = false;
 	}
 
 	private void HandleShowResult(ShowResult result)

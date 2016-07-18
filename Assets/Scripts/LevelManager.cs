@@ -23,6 +23,7 @@ public abstract class LevelManager : MonoBehaviour {
 	protected bool isJuicing;
 	private int currentSum = 0;
 	public static int levelNumber;//0 = langing page 1 = space 2 = stack
+	public static LevelManager instance;
 
 	public static AudioSource backgroundMusic;
 	public static bool isAudioOn;
@@ -43,6 +44,7 @@ public abstract class LevelManager : MonoBehaviour {
 	}
 
 	protected void Initialization(){
+		instance = this;
 		backgroundMusic = Camera.main.GetComponent<AudioSource> ();//background music audio source is attached to the main camera
 		if (PlayerPrefs.GetInt ("isMusicOn") == 0) {//0 = true = music is on, 1 = false = music is off
 			backgroundMusic.mute = false;
@@ -56,7 +58,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isJuicing = false;
 		accumulator = timeToSpawn;
 		if (levelNumber == 1)
-			timeToSpawn = 0.82f;
+			timeToSpawn = 0.8f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
@@ -67,9 +69,7 @@ public abstract class LevelManager : MonoBehaviour {
 			SetSum (PlayerPrefs.GetInt ("NextSum"));
 			PlayerPrefs.SetInt ("NextSum", 0);
 		}
-		print (sum);
 		UIManager.UpdateSumText (sum);
-
 	}
 
 	protected void GetInput<T>() where T : Node{
