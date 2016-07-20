@@ -58,7 +58,7 @@ public abstract class LevelManager : MonoBehaviour {
 		isJuicing = false;
 		accumulator = timeToSpawn;
 		if (levelNumber == 1)
-			timeToSpawn = 0.65f;
+			timeToSpawn = 0.75f;
 		score = 0;
 		index = 0;
 		selectedNodes = new HashSet<Node> ();
