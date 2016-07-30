@@ -442,6 +442,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LikeFacebook(){
-		Application.OpenURL("https://wwww.facebook.com/111percent");
+		Application.OpenURL("http://www.fortafygames.com/");
 	}
 }
