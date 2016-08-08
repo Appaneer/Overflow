@@ -139,19 +139,19 @@ public abstract class LevelManager : MonoBehaviour {
 							}
 							if (!isJuicing) {
 								totalNode = GameObject.FindGameObjectsWithTag ("Node").Length;
-								if(totalNode <= 10){
+								if(totalNode <= 12){
 									StartCoroutine ("juice1", 2);
 								}
-								else if(score <= 100 && score >= 50 && totalNode <= 15){
+								else if(score <= 75 && score >= 25 && totalNode <= 15){
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score <= 125 && score >= 100 && totalNode <= 20) {
+								else if (score <= 100 && score >= 75 && totalNode <= 20) {
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score <= 150 && score >= 125 && totalNode <= 25) {
+								else if (score <= 125 && score >= 100 && totalNode <= 25) {
 									StartCoroutine ("juice1", 2);
 								}
-								else if (score >= 150 && totalNode <= 30) {
+								else if (score >= 125 && totalNode <= 30) {
 									StartCoroutine ("juice1", 2);
 								}
 							}
