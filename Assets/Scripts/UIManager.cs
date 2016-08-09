@@ -316,7 +316,7 @@ public class UIManager : MonoBehaviour {
 				PlayerPrefs.SetInt ("HighScoreStack", LevelManager.score);
 			highScoreText.text = "High Score\n"+PlayerPrefs.GetInt ("HighScoreStack");
 		}
-		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.002f));
+		StartCoroutine (TextAnimation(scoreText2, LevelManager.score, "SCORE\n", 0.0001f));
 		gameOverAnim.SetTrigger ("GameOver");
 		StartCoroutine (TextAnimation(coinEarnedInGameText, LevelManager.score / 10, "COINS EARNED\n+", 0.05f));
 		coinText.text = ""+PlayerPrefs.GetInt ("Coins");
@@ -327,7 +327,8 @@ public class UIManager : MonoBehaviour {
 		yield return new WaitForSeconds (1f);
 		for(int i = 0; i <= number; i++){
 			txt.text = message + i;
-			yield return new WaitForSeconds (speed);
+			if(i % 2 == 0)
+				yield return new WaitForSeconds (speed);
 		}
 	}
 
