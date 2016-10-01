@@ -441,8 +441,4 @@ public class UIManager : MonoBehaviour {
 		Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
 		#endif
 	}
-
-	public void LikeFacebook(){
-		Application.OpenURL("http://www.fortafygames.com/");
-	}
 }
