@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	IEnumerator LoadWithWait(string sceneName){
-		yield return new WaitForSeconds (2f);
+		yield return new WaitForSeconds (1f);
 		SceneManager.LoadScene (sceneName);
 	}
 
