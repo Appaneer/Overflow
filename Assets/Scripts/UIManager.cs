@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour {
 	public Animator gameOverAnim;
 	public Text targetSumText;
 	public Text displaySumText;
-	public string gameId;
+	private string gameId;
 	public bool enableTestMode;
 	public static UIManager instance;
 	public Canvas pauseCanvas;
@@ -51,6 +51,12 @@ public class UIManager : MonoBehaviour {
 	public AudioMixerSnapshot unpaused;
 
 	void Start(){
+		#if UNITY_ANDROID
+		gameId = "1052747";
+		#elif UNITY_IPHONE
+		gameId = "1052748";
+		#endif
+
 		isGameEnded = false;
 		for(int number = 1; number <= 6; number++){
 			UIManager.updateText (GameObject.Find(number+" text").GetComponent<Text>(), PlayerPrefs.GetInt("Num"+number));
@@ -436,9 +442,9 @@ public class UIManager : MonoBehaviour {
 
 	public void RateApp(){
 		#if UNITY_ANDROID
-		Application.OpenURL("market://details?id=YOUR_ID");
+		Application.OpenURL("market://details?id=com.Appaneer.Overflow");
 		#elif UNITY_IPHONE
-		Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+		Application.OpenURL("itms-apps://itunes.apple.com/app/id1178395234");
 		#endif
 	}
 }
